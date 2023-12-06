@@ -1,0 +1,24 @@
+@model WebProject.Models.Order
+
+@* 
+
+FORM
+
+SEÇİLEN ÜRÜNLER İÇİN ÜRÜN SAYISI VS, MASA NOSU.... 
+
+*@
+
+<form asp-controller="Order" asp-action="Create" method="post">
+
+    <div class="mb-3">
+        <label asp-for="TableNo" class="form-label">Table Number</label>
+        <input asp-for="TableNo" class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CustomerName" class="form-label">Customer Name</label>
+        <input asp-for="CustomerName" class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Order</button>
+</form>

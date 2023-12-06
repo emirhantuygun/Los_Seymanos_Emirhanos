@@ -1,0 +1,12 @@
+@model WebProject.Models.Order
+
+
+<p>
+   Do you want to cancel the @Model.CustomerName's order?
+</p>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" name="id" asp-for="@Model.OrderId">
+    <button type="submit" class="btn btn-danger">Yes</button>
+    <a href="/Order/MyOrder"><button type="button" class="btn btn-primary">No</button></a>
+</form>
