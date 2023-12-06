@@ -12,5 +12,7 @@ namespace WebProject.Data{
         //public DbSet<Course> Courses=>Set<Course>();
 
         //public DbSet<StudentCourse> Participants =>Set<StudentCourse>();
+
+        //kakakak
     }
 }
