@@ -1,8 +1,8 @@
-using WebProject.Data;
+using CafeApp.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace WebProject.Controllers
+namespace CafeApp.Controllers
 {
 
     public class BaristaController : Controller

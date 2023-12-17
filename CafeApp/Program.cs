@@ -1,4 +1,4 @@
-using WebProject.Data;
+using CafeApp.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

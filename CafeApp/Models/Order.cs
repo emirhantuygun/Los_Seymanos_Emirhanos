@@ -1,18 +1,19 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using CafeApp.Models;
 
-namespace WebProject.Models
+
+namespace CafeApp.Models
 {
     public class Order
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OrderId { get; set; }
-        public int TableNo { get; set; }
+        public int? TableNo { get; set; }
         public string? CustomerName { get; set; }
-        [NotMapped]
-        public List<string>? Items { get; set; }
+        
+        public List<SelectedProduct>? Products { get; set; }
         public float Price {get; set;}
         public bool IsServed { get; set; }
         public bool IsPaid { get; set; }

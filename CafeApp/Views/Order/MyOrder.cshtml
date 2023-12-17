@@ -1,49 +1,54 @@
-@model IEnumerable<WebProject.Models.Order>
+@model Order
 
 
-@* MY ORDERS
-+ EDİT, DELETE
-+ STATUS
-+ İPTAL VE EDİT İÇİN 2 DK SÜRE
 
- *@
-
-
-<h2>Order List</h2>
+<h2>My Order</h2>
 
 <table class="table">
-    <thead>
-        <tr>
-            <td>Order Id</td>
-            <th>Table Number</th>
-            <th>Customer Name</th>
-            <th>Products</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var pr in Model)
-        {
-            <tr>
-                <td>@pr.OrderId</td>
-                <td>@pr.TableNo</td>
-                <td>@pr.CustomerName</td>
-                <td>
-                    @* Müşterinin eklediği ürünler Items listesinden yazdırılacak.
-                    Aşağıdaki kod hata veriyor. *@
-                    @* @{
-                        for(int i=0; i<pr.Items.Count; i++){
-                            @pr.Items[i]
-                        }
-                    } *@
-                    
-                </td>
-                <td>
-                    <a asp-controller="Order" asp-action="Edit" asp-route-id="@pr.OrderId" class="btn btn-primary btn-sm">Edit</a>
-                    <a asp-controller="Order" asp-action="Delete" asp-route-id="@pr.OrderId" class="btn btn-danger btn-sm">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
+  <thead>
+    <tr>
+      <th>Order Id</th>
+      <th>Table Number</th>
+      <th>Customer Name</th>
+      <th>Products</th>
+      <th>Total Price</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td>@Model.OrderId</td>
+        <td>@Model.TableNo</td>
+        <td>@Model.CustomerName</td>
+      
+        <td>
+          @{
+          int totalPrice = 0;
+          if (Model.Products != null && Model.Products.Any())
+          {
+            foreach (var sp in Model.Products)
+            {
+              <span>@(sp.Product?.Name ?? "Product Name is null") @sp.Product.Option  @(sp.Quantity)x &nbsp;&nbsp; $@(Int32.Parse(sp.Product.Price)*sp.Quantity)</span>
+              <br>            
+              totalPrice += Int32.Parse(sp.Product.Price)*sp.Quantity;
+            }
+          }
+
+          }
+        </td>
+        <td>
+          <span>$@totalPrice</span>
+        </td>
+
+      
+        <td>
+          <a asp-controller="Order" asp-action="Edit" asp-route-id="@Model.OrderId"
+            class="btn btn-primary btn-sm">Edit</a>
+          <a asp-controller="Order" asp-action="Delete" asp-route-id="@Model.OrderId"
+            class="btn btn-danger btn-sm">Delete</a>
+        </td>
+      </tr>
+  </tbody>
 </table>
+
 
 <a href="/Order/Create" class="btn btn-primary">Create a New Order!</a>

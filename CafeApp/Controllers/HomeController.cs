@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using WebProject.Models;
+using CafeApp.Models;
 
-namespace WebProject.Controllers;
+namespace CafeApp.Controllers;
 
 public class HomeController : Controller
 {

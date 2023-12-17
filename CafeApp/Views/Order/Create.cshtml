@@ -1,24 +1,165 @@
-@model WebProject.Models.Order
+@model Tuple<List<Product>, Order>
+<!DOCTYPE html>
+<html lang="en">
 
-@* 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/index.css">
+    <title>Product List</title>
+</head>
 
-FORM
+<body>
 
-SEÇİLEN ÜRÜNLER İÇİN ÜRÜN SAYISI VS, MASA NOSU.... 
+    <div class="container">
+        <div class="row justify-content-center">
 
-*@
+            <div id="ProductsList" class="col-8">
+                @{
 
-<form asp-controller="Order" asp-action="Create" method="post">
+                    var groupedProducts = Model.Item1.GroupBy(p => p.Name);
 
-    <div class="mb-3">
-        <label asp-for="TableNo" class="form-label">Table Number</label>
-        <input asp-for="TableNo" class="form-control">
+                    foreach (var group in groupedProducts)
+                    {
+                        if (group.Count() == 1)
+                        {
+                            <div class="product-card">
+                                <img src="@group.First().ImageSrc" alt="@group.First().Name">
+                                <h2>@group.First().Name</h2>
+                                <p>$ @group.First().Price</p>
+                                <button class="bagButton"
+                                    onclick="addToBag(@group.First().ProductId); printOrderDetails('@group.First().Name', @group.First().Price);">Add
+                                    to Bag
+                                </button>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="product-card">
+                                <img src="@group.First().ImageSrc" alt="@group.First().Name">
+                                <h2>@group.First().Name</h2>
+                                @{
+                                    var orderedGroup = group.OrderBy(p => Convert.ToInt32(p.Price)).ToList();
+                                    int counter = 0;
+                                    foreach (var product in orderedGroup)
+                                    {
+                                        <input type="radio" name="@orderedGroup[0].ProductId.ToString()" id="@product.ProductId"
+                                            title="@product.Name" placeholder="@product.Option" value="@product.Price">
+                                        <label for="@product.ProductId">@product.Option &nbsp; $@product.Price</label>
+                                        <br>
+                                        counter++;
+                                    }
+                                }
+                                <button class="bagButton" onclick="trigger('@orderedGroup[0].ProductId.ToString()')">Add
+                                    to Bag
+                                </button>
+                            </div>
+                        }
+                    }
+                }
+            </div>
+
+
+
+
+            <div class="col-4">
+                <div id="OrderForm" class="row">
+                    <form asp-controller="Order" asp-action="Create" method="post">
+                        <div>
+                            <label asp-for="Item2.TableNo" class="form-label">Table Number</label>
+                            <input asp-for="Item2.TableNo" name="number" class="form-control" required>
+                        </div>
+
+                        <div>
+                            <label asp-for="Item2.CustomerName" class="form-label">Customer Name</label>
+                            <input asp-for="Item2.CustomerName" name="name" class="form-control" required>
+                        </div>
+
+                        <button type="submit" onclick="check()" class="btn btn-primary">Order</button>
+                    </form>
+                </div>
+                <br>
+                <br>
+                <div id="OrderDetails" class="row">
+                    <table id="tbl">
+                        <tr>
+                            <th>Total:</th>
+                            <th id="total">$ 0</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="mb-3">
-        <label asp-for="CustomerName" class="form-label">Customer Name</label>
-        <input asp-for="CustomerName" class="form-control">
-    </div>
 
-    <button type="submit" class="btn btn-primary">Order</button>
-</form>
+    <script>
+
+        function trigger(inputId) {
+            var selectedRadio = document.querySelector(`input[name="${inputId}"]:checked`);
+            if (selectedRadio) {
+                var id = selectedRadio.id;
+                var name = selectedRadio.title;
+                var price = selectedRadio.value;
+                var option = selectedRadio.placeholder;
+
+                addToBag(id);
+                printOrderDetails(name, price, option);
+            }
+            else (
+                alert("Please Choose an Option!")
+            )
+        }
+
+        function addToBag(productId) {
+
+            console.log("Adding to bag:", productId);
+
+            $.ajax({
+                type: "POST",
+                url: "/Order/AddToBag",
+                data: { productId: productId },
+                success: function (response) {
+                    // Handle success if needed
+                },
+                error: function (error) {
+                    // Handle error if needed
+                }
+            });
+        }
+
+        function printOrderDetails(name, price, option) {
+
+            var table = document.querySelector("#tbl");
+            var tableRow = document.createElement("tr");
+
+            var nameElement = document.createElement("td");
+            if (option != undefined)
+                nameElement.textContent = name + " " + option;
+            else
+                nameElement.textContent = name;
+
+            var priceElement = document.createElement("td");
+            priceElement.textContent = `$ ${price}`;
+
+            tableRow.appendChild(nameElement);
+            tableRow.appendChild(priceElement);
+            table.insertBefore(tableRow, table.lastChild);
+
+            var total = document.getElementById("total");
+            var totalPrice = parseInt(total.textContent.substring(2)) + parseInt(price);
+            total.textContent = `$ ${totalPrice}`;
+
+        }
+
+        function check() {
+            var total = document.getElementById("total");
+            var totalPrice = parseInt(total.textContent.substring(2));
+            if(totalPrice == 0){
+                alert("Please Choose a Product!");
+            }
+        }
+    </script>
+</body>
+
+</html>

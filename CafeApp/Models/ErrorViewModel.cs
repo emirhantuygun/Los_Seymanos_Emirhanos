@@ -1,4 +1,4 @@
-namespace WebProject.Models;
+namespace CafeApp.Models;
 
 public class ErrorViewModel
 {
