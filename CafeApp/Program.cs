@@ -1,11 +1,13 @@
 using CafeApp.Data;
 using Microsoft.EntityFrameworkCore;
+using WebProject.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddHostedService<DatabaseInitializer>();
 
 builder.Services.AddDbContext<DataContext>(
     Options=>{

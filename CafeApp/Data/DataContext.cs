@@ -1,5 +1,6 @@
 using CafeApp.Models;
 using Microsoft.EntityFrameworkCore;
+using WebProject.Models;
 
 namespace CafeApp.Data
 {
@@ -12,7 +13,14 @@ namespace CafeApp.Data
 
         public DbSet<SelectedProduct> SelectedProducts { get; set; }
 
-        public DataContext(DbContextOptions<DataContext> options) : base(options){}
+        public DbSet<Barista> Baristas { get; set; }
+
+        public Barista? FindByEmail(string email)
+        {
+            return Baristas.SingleOrDefault(b => b.Email == email);
+        }
+
+        public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
     }
 

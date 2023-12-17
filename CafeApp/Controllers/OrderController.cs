@@ -87,7 +87,7 @@ namespace CafeApp.Controllers
                     };
 
                     Console.WriteLine("");
-                    Console.WriteLine(selectedProducts.First().Product.Name);
+                    Console.WriteLine(selectedProducts.First().Product?.Name);
                     Console.WriteLine("");
 
                     _context.Orders.Add(newOrder);
@@ -117,7 +117,7 @@ namespace CafeApp.Controllers
         [HttpGet]
         public async Task<IActionResult> MyOrder()
         {
-            List<Order>? ordersWithItems = await _context.Orders.Include(o => o.Products).ThenInclude(p => p.Product).ToListAsync();
+            List<Order>? ordersWithItems = await _context.Orders.Include(o => o.Products!).ThenInclude(p => p.Product).ToListAsync();
 
             return View(ordersWithItems.Last());
         }

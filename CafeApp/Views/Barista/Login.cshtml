@@ -1,1 +1,33 @@
-LOGİN SAYFASI
+@{
+    Layout = "_Layout2";
+    ViewData["Title"] = "Login";
+}
+
+@model WebProject.Models.Barista;
+
+<div class="wrapper">
+    <h1 class="loginHeader">Please Provide Your Informations</h1>
+
+
+    <div class="error-message">
+        <div id="errorMessage">@TempData["Error Message"]</div>
+    </div>
+
+    <form metzhod="post" class="loginForm" asp-controller="Barista" asp-action="Login">
+        <input class="loginInput email" type="email" placeholder="Email address" asp-for="Email">
+        <input class="loginInput password" type="password" placeholder="Password" asp-for="Password">
+        <button class="loginBtn" type="submit">Login</button>
+    </form>
+</div>
+
+<script>
+    setTimeout(function () {
+        var errorMessage = document.getElementById("errorMessage");
+
+        if (errorMessage) {
+            setTimeout(function () {
+                errorMessage.style.opacity = '0';
+            }, 1000);
+        }
+    }, 5000);
+</script>

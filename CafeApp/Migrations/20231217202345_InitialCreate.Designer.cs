@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CafeApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231217102026_CafeDB")]
-    partial class CafeDB
+    [Migration("20231217202345_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,6 +97,25 @@ namespace CafeApp.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("SelectedProducts");
+                });
+
+            modelBuilder.Entity("WebProject.Models.Barista", b =>
+                {
+                    b.Property<int>("BaristaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("BaristaId");
+
+                    b.ToTable("Baristas");
                 });
 
             modelBuilder.Entity("CafeApp.Models.SelectedProduct", b =>

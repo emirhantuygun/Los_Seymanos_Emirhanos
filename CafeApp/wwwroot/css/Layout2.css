@@ -1,0 +1,152 @@
+* {
+    margin: 0;
+    padding: 0;
+    outline: none;
+    border: none;
+    font-size: 16px;
+}
+
+h1 {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 48px;
+}
+
+body {
+    background-color: #F8F8F8;
+    height: 100vh;
+    margin: 0;
+    position: relative;
+    color: #2E2928;
+    font-family: 'Lato', sans-serif;
+    padding: 0 240px;
+}
+
+.cup {
+    width: 400px;
+    height: 400px;
+    z-index: -1;
+    opacity: 1;
+}
+
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    top: 40%;
+    transform: translateY(-50%);
+    flex-direction: column;
+}
+
+.welcomeHeader {
+    width: 65%;
+    margin-left: 85px;
+    margin-bottom: 15px;
+}
+
+.right-intro{
+    margin-top:30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+h2 {
+    font-size: 36px;
+    font-family: 'Times New Roman', Times, serif;
+    margin-bottom: 60px;
+}
+
+.linkContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.commonBtn {
+    width: 10vw;
+    height: 5vh;
+    font-size: 24px;
+    font-family: 'Times New Roman', Times, serif;
+    border: none;
+    background-color: #b80f2b;
+    text-decoration: none;
+    text-align: center;
+    color: #FFF;
+    line-height: 5vh;
+    border-radius: 14px;
+}
+
+.customerBtn {
+    margin-right: 40px;
+}
+
+.customerBtn:hover {
+    opacity: .8;
+    transition: all 0.3s;
+}
+
+.managerBtn:hover {
+    opacity: .8;
+    transition: all 0.3s;
+}
+
+.loginForm {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.loginInput {
+    background-color: #8b45132a;
+    width: 14vw;
+    height: 4vh;
+    font-size: 14px;
+    padding: 8px;
+}
+
+.loginInput:focus{
+    transition: all 0.3s;
+    outline: 1px dashed #8B4513;
+}
+
+.loginInput::placeholder {
+    color: #2E2928;
+    opacity: .7;
+}
+
+.password {
+    margin: 15px 0;
+}
+
+.loginBtn {
+    width: 10vw;
+    height: 5vh;
+    margin-top: 5px;
+    background-color: #2E2928;
+    color: #F8F8F8;
+
+}
+
+.loginBtn:hover {
+    cursor: pointer;
+    opacity: .8;
+    transition: all 0.3s;
+}
+
+.loginHeader {
+    margin-bottom: 54px;
+    font-size: 48px;
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 30px;
+    height: 36px;
+    text-align: center;
+    line-height: 36px;
+}
+
+#errorMessage {
+    transition: all 0.3s;
+}

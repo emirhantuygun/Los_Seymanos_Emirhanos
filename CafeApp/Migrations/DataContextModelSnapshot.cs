@@ -96,6 +96,25 @@ namespace CafeApp.Migrations
                     b.ToTable("SelectedProducts");
                 });
 
+            modelBuilder.Entity("WebProject.Models.Barista", b =>
+                {
+                    b.Property<int>("BaristaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("BaristaId");
+
+                    b.ToTable("Baristas");
+                });
+
             modelBuilder.Entity("CafeApp.Models.SelectedProduct", b =>
                 {
                     b.HasOne("CafeApp.Models.Order", null)

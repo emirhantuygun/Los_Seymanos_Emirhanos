@@ -1,15 +1,21 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Welcome";
+    Layout = "_Layout2";
 }
 
+<div class="wrapper">
+    <div class="left-intro">
+        <h1 class="welcomeHeader">Welcome to</h1>
+        <img class="cup" src="/images/logo.png" alt="Logo">
+    </div>
 
-BURAYA BARİSTA YA DA MÜŞTERİ ŞEKLİNDE İKİ BUTON EKLENECEK
+    <div class="right-intro">
+        <h2>Are you a customer or a barista?</h2>
 
-BARİSTA -> BARISTA/INDEX
-MUSTERİ -> ORDER/INDEX
+        <div class="linkContainer">
+            <a class="commonBtn customerBtn" asp-controller="Order" asp-action="Create">Customer</a>
+            <a class="commonBtn managerBtn" asp-controller="Barista" asp-action="Login">Barista</a>
+        </div>
 
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
 </div>

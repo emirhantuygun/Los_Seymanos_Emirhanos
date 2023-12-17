@@ -27,9 +27,9 @@
           {
             foreach (var sp in Model.Products)
             {
-              <span>@(sp.Product?.Name ?? "Product Name is null") @sp.Product.Option  @(sp.Quantity)x &nbsp;&nbsp; $@(Int32.Parse(sp.Product.Price)*sp.Quantity)</span>
+              <span>@(sp.Product?.Name ?? "Product Name is null") @sp.Product!.Option  @(sp.Quantity)x &nbsp;&nbsp; $@(Int32.Parse(sp.Product.Price!)*sp.Quantity)</span>
               <br>            
-              totalPrice += Int32.Parse(sp.Product.Price)*sp.Quantity;
+              totalPrice += Int32.Parse(sp.Product.Price!)*sp.Quantity;
             }
           }
 

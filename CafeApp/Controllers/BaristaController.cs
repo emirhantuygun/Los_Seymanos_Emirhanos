@@ -1,7 +1,6 @@
 using CafeApp.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
+using WebProject.Models;
 namespace CafeApp.Controllers
 {
 
@@ -18,6 +17,28 @@ namespace CafeApp.Controllers
 
         public IActionResult Login()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Login(Barista model)
+        {
+            if (model.Email != null)
+            {
+                var barista = _context.FindByEmail(model.Email);
+
+                if (barista != null && barista.Password == model.Password)
+                {
+                    return RedirectToAction("OrderList");
+                }
+                else{
+                    TempData["Error Message"] = "Invalid email or password";
+
+                    
+                }
+
+            }
+
             return View();
         }
 
