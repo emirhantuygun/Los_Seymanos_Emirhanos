@@ -1,0 +1,12 @@
+@model CafeApp.Models.Product
+
+
+<p>
+   Do you want to delete the product named @Model.Name ?
+</p>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" name="id" asp-for="@Model.ProductId">
+    <button type="submit" class="btn btn-danger">Yes</button>
+    <a href="/Barista/ProductList"><button type="button" class="btn btn-primary">No</button></a>
+</form>

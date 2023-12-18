@@ -1,0 +1,38 @@
+@model IEnumerable<CafeApp.Models.Product>
+
+@{
+    ViewData["Title"] = "Product List";
+}
+
+<h2>Product List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var product in Model)
+    {
+        <tr>
+            <td>
+                <img src="@product.ImageSrc" alt="@product.Name" style="width: 100px; height: auto;">
+            </td>
+            <td>@product.Name</td>
+            <td>@product.Type</td>
+            <td>
+                
+                <a asp-action="Edit" asp-controller="Product" asp-route-id="@product.ProductId" class="btn btn-primary">Edit</a>
+
+                <a asp-action="Delete" asp-controller="Product" asp-route-id="@product.ProductId" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a asp-action="Create" asp-controller="Product" class="btn btn-success">Add New Product</a>

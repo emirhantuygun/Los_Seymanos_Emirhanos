@@ -1,0 +1,39 @@
+@model CafeApp.Models.Order
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<h2>Order Details</h2>
+<hr>
+
+<form asp-controller="Order" asp-action="UpdateOrderStatus" method="post">
+    @Html.HiddenFor(model => model.OrderId)
+
+    <div class="form-group">
+        <label>Table No:</label>
+        <p>@Model.TableNo</p>
+    </div>
+
+    <div class="form-group">
+        <label>Customer Name:</label>
+        <p>@Model.CustomerName</p>
+    </div>
+    <div class="form-group">
+        <label>Selected Product</label>
+        <p>@Model.Products</p>
+    </div>
+
+    <div class="form-group">
+        <label>Is Served:</label>
+        @Html.CheckBoxFor(model => model.IsServed)
+    </div>
+
+    <div class="form-group">
+        <label>Is Paid:</label>
+        @Html.CheckBoxFor(model => model.IsPaid)
+    </div>
+
+   
+    <button type="submit" class="btn btn-primary">Update Order</button>
+</form>

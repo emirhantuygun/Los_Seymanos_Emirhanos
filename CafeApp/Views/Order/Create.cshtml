@@ -13,46 +13,39 @@
 
     <div class="container">
         <div class="row justify-content-center">
-
             <div id="ProductsList" class="col-8">
                 @{
-
                     var groupedProducts = Model.Item1.GroupBy(p => p.Name);
 
                     foreach (var group in groupedProducts)
                     {
-                        if (group.Count() == 1)
+                        var firstProduct = group.First();
+                        if (group.Count() == 1 || firstProduct.Type == "Dessert")
                         {
+                            decimal price = firstProduct.Type == "Dessert" ? firstProduct.PriceDessert ?? 0 : 0;
+
                             <div class="product-card">
-                                <img src="@group.First().ImageSrc" alt="@group.First().Name">
-                                <h2>@group.First().Name</h2>
-                                <p>$ @group.First().Price</p>
-                                <button class="bagButton"
-                                    onclick="addToBag(@group.First().ProductId); printOrderDetails('@group.First().Name', @group.First().Price);">Add
-                                    to Bag
-                                </button>
+                                <img src="@firstProduct.ImageSrc" alt="@firstProduct.Name">
+                                <h2>@firstProduct.Name</h2>
+                                <p>$ @price</p>
+                                <button class="bagButton" onclick="addToBag(@firstProduct.ProductId); printOrderDetails('@firstProduct.Name', @price);">Add to Bag</button>
                             </div>
                         }
                         else
                         {
                             <div class="product-card">
-                                <img src="@group.First().ImageSrc" alt="@group.First().Name">
-                                <h2>@group.First().Name</h2>
-                                @{
-                                    var orderedGroup = group.OrderBy(p => Convert.ToInt32(p.Price)).ToList();
-                                    int counter = 0;
-                                    foreach (var product in orderedGroup)
-                                    {
-                                        <input type="radio" name="@orderedGroup[0].ProductId.ToString()" id="@product.ProductId"
-                                            title="@product.Name" placeholder="@product.Option" value="@product.Price">
-                                        <label for="@product.ProductId">@product.Option &nbsp; $@product.Price</label>
-                                        <br>
-                                        counter++;
-                                    }
+                                <img src="@firstProduct.ImageSrc" alt="@firstProduct.Name">
+                                <h2>@firstProduct.Name</h2>
+                                @foreach (var product in group)
+                                {
+                                    decimal price = product.Option == "Tall" ? product.PriceTall ?? 0 :
+                                                    product.Option == "Grande" ? product.PriceGrande ?? 0 :
+                                                    product.PriceVenti ?? 0;
+                                    
+                                    <input type="radio" name="@firstProduct.ProductId" id="@product.ProductId" title="@product.Name" placeholder="@product.Option" value="@price">
+                                    <label for="@product.ProductId">@product.Option &nbsp; $@price</label><br>
                                 }
-                                <button class="bagButton" onclick="trigger('@orderedGroup[0].ProductId.ToString()')">Add
-                                    to Bag
-                                </button>
+                                <button class="bagButton" onclick="trigger('@firstProduct.ProductId')">Add to Bag</button>
                             </div>
                         }
                     }

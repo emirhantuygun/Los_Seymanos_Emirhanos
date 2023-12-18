@@ -1,0 +1,31 @@
+@model IEnumerable<Order>
+
+<h2>Order List</h2>
+<hr>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <td>Table No</td>
+            <th>Customer Name</th>
+            <th>Service Status</th>
+            <th>Payment Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var order in Model)
+        {
+            <tr>
+                <td>@order.TableNo</td>
+                <td>@order.CustomerName</td>
+                <td>@order.IsServed</td>
+                <td>@order.IsPaid</td>
+                <td>
+                    <a asp-controller="Barista" asp-action="OrderDetails" asp-route-id="@order.OrderId" class="btn btn-primary btn-sm">Details</a>
+                    <a asp-controller="Order" asp-action="Delete" asp-route-id="@order.OrderId" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

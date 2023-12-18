@@ -19,25 +19,48 @@
         <td>@Model.OrderId</td>
         <td>@Model.TableNo</td>
         <td>@Model.CustomerName</td>
-      
-        <td>
-          @{
-          int totalPrice = 0;
-          if (Model.Products != null && Model.Products.Any())
-          {
+      <td>
+    @{
+        decimal totalPrice = 0;
+        if (Model.Products != null && Model.Products.Any())
+        {
             foreach (var sp in Model.Products)
             {
-              <span>@(sp.Product?.Name ?? "Product Name is null") @sp.Product!.Option  @(sp.Quantity)x &nbsp;&nbsp; $@(Int32.Parse(sp.Product.Price!)*sp.Quantity)</span>
-              <br>            
-              totalPrice += Int32.Parse(sp.Product.Price!)*sp.Quantity;
-            }
-          }
+                string productName = sp.Product?.Name ?? "Product Name is null";
+                string productOption = sp.Product?.Option ?? string.Empty;
+                decimal productPrice = 0;
 
-          }
-        </td>
-        <td>
-          <span>$@totalPrice</span>
-        </td>
+                switch (sp.Product?.Type)
+                {
+                    case "Beverage":
+                        switch (productOption)
+                        {
+                            case "Tall":
+                                productPrice = sp.Product.PriceTall ?? 0;
+                                break;
+                            case "Grande":
+                                productPrice = sp.Product.PriceGrande ?? 0;
+                                break;
+                            case "Venti":
+                                productPrice = sp.Product.PriceVenti ?? 0;
+                                break;
+                        }
+                        break;
+                    case "Dessert":
+                        productPrice = sp.Product.PriceDessert ?? 0;
+                        break;
+                }
+
+                <span>@productName @productOption  @(sp.Quantity)x &nbsp;&nbsp; $@productPrice</span><br>
+                totalPrice += productPrice * sp.Quantity;
+            }
+        }
+    }
+</td>
+<td>
+    <span>$@totalPrice</span>
+</td>
+
 
       
         <td>
