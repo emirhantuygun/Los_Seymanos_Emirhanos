@@ -1,138 +1,186 @@
 @model Tuple<List<Product>, Order>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="~/css/create.css">
-    <title>Product List</title>
-</head>
+@{
+    ViewData["Header"] = "Enjoy!";
+}
 
-<body>
+<link rel="stylesheet" href="~/css/createProduct.css">
 
-    <div class="container">
-        <div class="row justify-content-center">
-            <div id="ProductsList" class="col-8">
-                @{
-                    foreach (var product in Model.Item1)
-                    {
-                        <div class="product-card">
-                            <img src="@product.ImageSrc" alt="@product.Name">
-                            <h2>@product.Name</h2>
+<div class="Wrapper">
+    <div class="productsContainer">
+        <div id="ProductsList">
+            @{
+                foreach (var product in Model.Item1)
+                {
+                    <div id="product" class="product">
+                        <div class="productInfo">
+                            <p>@product.Name</p>
                             <p>$ @product.Price</p>
-                            <button class="bagButton"
-                                onclick="addToBag(@product.ProductId, @Model.Item2.OrderId); printOrderDetails('@product.Name', @product.Price);" disabled>Add
-                                to Bag</button>
                         </div>
-                    }
+                        <div class="filter"></div>
+                        <div class="controlBag">
+                            <button
+                                onclick="removeFromBag(@product.ProductId, @Model.Item2.OrderId, '@product.Name', @product.Price);"
+                                class="bagButton" disabled>-</button>
+                            <input id="quantityInput_@product.ProductId" value="0" type="number">
+                            <button
+                                onclick="addToBag(@product.ProductId, @Model.Item2.OrderId, '@product.Name', @product.Price);"
+                                class="bagButton" disabled>+</button>
+                        </div>
+                    </div>
                 }
-            </div>
-
-
-
-
-            <div class="col-4">
-                <div id="OrderForm" class="row">
-                    <form asp-controller="Order" asp-action="Create" method="post" onsubmit="return check()">
-                        <div>
-                            <input asp-for="Item2.OrderId" type="hidden" name="orderId" class="form-control"
-                                value="@Model.Item2.OrderId">
-                        </div>
-
-                        <div>
-                            <label asp-for="Item2.TableNo" class="form-label">Table Number</label>
-                            <input asp-for="Item2.TableNo" name="tableNo" class="form-control" required>
-                        </div>
-
-                        <div>
-                            <label asp-for="Item2.CustomerName" class="form-label">Customer Name</label>
-                            <input asp-for="Item2.CustomerName" name="customerName" class="form-control" required>
-                        </div>
-
-                        <div>
-                            <input asp-for="Item2.TotalPrice" type="hidden" id="totalPrice" name="totalPrice"
-                                class="form-control" value="0">
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Order</button>
-                    </form>
-                </div>
-                <br>
-                <br>
-                <div id="OrderDetails" class="row">
-                    <table id="tbl">
-                        <tr>
-                            <th>Total:</th>
-                            <th id="total">$ 0</th>
-                        </tr>
-                    </table>
-                </div>
-            </div>
+            }
         </div>
+
     </div>
 
+    <div class="right">
+        <div id="OrderForm">
+            <form asp-controller="Order" asp-action="Create" method="post" onsubmit="return check()">
+                <div>
+                    <input asp-for="Item2.OrderId" type="hidden" name="orderId" value="@Model.Item2.OrderId">
+                </div>
 
-    <script>
+                <div>
+                    <label asp-for="Item2.TableNo" class="form-label">Table Number</label>
+                    <input asp-for="Item2.TableNo" name="tableNo" required>
+                </div>
 
-        setTimeout(function () {
-            document.querySelectorAll('.bagButton').forEach(b => b.removeAttribute('disabled'));
-        }, 3000);
+                <div>
+                    <label asp-for="Item2.CustomerName" class="form-label">Customer Name</label>
+                    <input asp-for="Item2.CustomerName" name="customerName" required>
+                </div>
 
-        function addToBag(productId, orderId) {
+                <div>
+                    <input asp-for="Item2.TotalPrice" type="hidden" id="totalPrice" name="totalPrice" value="0">
+                </div>
 
-            console.log("Adding to bag:", productId);
+                <button type="submit">Order</button>
+            </form>
+        </div>
+        <br>
+        <br>
+        <div id="OrderDetails">
+            <table id="tbl">
+                <tr>
+                    <th>Total:</th>
+                    <th id="total">$ 0</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
 
-            $.ajax({
-                type: "POST",
-                url: "/Order/AddToBag",
-                data: { productId: productId, orderId: orderId },
-                success: function (response) {
-                    // Handle success if needed
-                },
-                error: function (error) {
-                    // Handle error if needed
-                }
-            });
+
+<script>
+    setTimeout(function () {
+        document.querySelectorAll('.bagButton').forEach(b => b.removeAttribute('disabled'));
+    }, 2000);
+
+    function addToBag(productId, orderId, productName, productPrice) {
+        $.ajax({
+            type: "POST",
+            url: "/Order/AddToBag",
+            data: { productId: productId, orderId: orderId },
+            success: function (response) {
+                printOrderDetails(productName, productPrice, response.quantity, productId)
+                updateQuantityInput(productId, response.quantity);
+            },
+            error: function (error) {
+            }
+        });
+    }
+
+    function removeFromBag(productId, orderId, productName, productPrice) {
+        $.ajax({
+            type: "POST",
+            url: "/Order/RemoveFromBag",
+            data: { productId: productId, orderId: orderId },
+            success: function (response) {
+                printOrderDetails(productName, productPrice, response.quantity, productId);
+                updateQuantityInput(productId, response.quantity);
+            },
+            error: function (error) {
+            }
+        });
+    }
+
+    function updateQuantityInput(productId, quantity) {
+        var quantityInput = document.getElementById("quantityInput_" + productId);
+        if (quantityInput) {
+            quantityInput.value = quantity;
         }
+    }
 
-        function printOrderDetails(name, price, option) {
+    var addedProducts = [];
 
-            var table = document.querySelector("#tbl");
+    function printOrderDetails(name, price, quantity, productId) {
+        var table = document.querySelector("#tbl");
+
+        if (!addedProducts.includes(name) && quantity != 0) {
             var tableRow = document.createElement("tr");
+            tableRow.id = productId * 100;
 
             var nameElement = document.createElement("td");
-            if (option != undefined)
-                nameElement.textContent = name + " " + option;
-            else
-                nameElement.textContent = name;
+            nameElement.textContent = name;
 
             var priceElement = document.createElement("td");
+            priceElement.id = `${productId * 10}`;
+            priceElement.classList.add("price");
             priceElement.textContent = `$ ${price}`;
+
+            var quantityElement = document.createElement("td");
+            quantityElement.id = `${productId}`;
+            quantityElement.textContent = quantity + "x";
 
             tableRow.appendChild(nameElement);
             tableRow.appendChild(priceElement);
+            tableRow.appendChild(quantityElement);
             table.insertBefore(tableRow, table.lastChild);
 
-            var total = document.getElementById("total");
-            var totalPrice = parseInt(total.textContent.substring(2)) + parseInt(price);
-            total.textContent = `$ ${totalPrice}`;
+            addedProducts.push(name);
+        }
+        else {
+            var quantityElement = document.getElementById(`${productId}`);
+            var priceElement = document.getElementById(`${productId * 10}`);
+
+            quantityElement.textContent = quantity + "x";
+            priceElement.textContent = "$ " + `${price}` * quantity;
         }
 
-        function check() {
-            var total = document.getElementById("total");
-            var totalPrice = parseInt(total.textContent.substring(2));
-            if (totalPrice == 0) {
-                alert("Please choose a product!");
-                return false;
+        var total = document.getElementById("total");
+        var allPrices = document.querySelectorAll(".price");
+        var totalPrice = 0;
+
+        allPrices.forEach(priceElement => {
+            var price = parseInt(priceElement.textContent.substring(2));
+            totalPrice += price;
+
+            if (price == 0) {
+                var tableRow = document.getElementById(`${productId}` * 100);
+                tableRow.remove();
+
+                var index = addedProducts.indexOf(name);
+
+                if (index !== -1) {
+                    addedProducts.splice(index, 1);
+                }
             }
-            else {
-                document.getElementById("totalPrice").setAttribute("value", totalPrice);
-                return true;
-            }
+        })
+
+        total.textContent = `$ ${totalPrice}`;
+    }
+
+    function check() {
+        var total = document.getElementById("total");
+        var totalPrice = parseInt(total.textContent.substring(2));
+        if (totalPrice == 0) {
+            alert("Please choose a product!");
+            return false;
         }
-
-    </script>
-</body>
-
-</html>
+        else {
+            document.getElementById("totalPrice").setAttribute("value", totalPrice);
+            return true;
+        }
+    }
+</script>

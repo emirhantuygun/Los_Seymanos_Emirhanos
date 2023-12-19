@@ -1,10 +1,7 @@
 using CafeApp.Data;
 using CafeApp.Models;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Linq;
 
 namespace CafeApp.Controllers
 {
@@ -41,7 +38,39 @@ namespace CafeApp.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Json(new { success = true });
+            var updatedQuantity = _context.OrderProducts
+                .Where(op => op.OrderId == orderId && op.ProductId == productId)
+                .Select(op => op.Quantity)
+                .FirstOrDefault();
+
+            return Json(new { success = true, quantity = updatedQuantity });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromBag(int productId, int orderId)
+        {
+
+            var existingOrderProduct = _context.OrderProducts.FirstOrDefault(op => op.OrderId == orderId && op.ProductId == productId);
+
+            if (existingOrderProduct != null)
+            {
+                if (existingOrderProduct.Quantity >= 1)
+                {
+                    existingOrderProduct.Quantity--;
+                }
+                else
+                {
+                    _context.OrderProducts.Remove(existingOrderProduct);
+                }
+
+                await _context.SaveChangesAsync();
+
+                var updatedQuantity = existingOrderProduct.Quantity;
+
+                return Json(new { success = true, quantity = updatedQuantity });
+            }
+
+            return Json(new { success = true, quantity = 0 });
         }
 
 

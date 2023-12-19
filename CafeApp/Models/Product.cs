@@ -22,6 +22,5 @@ namespace CafeApp.Models
 
         [BindProperty]
         public decimal? Price { get; set; }
-
     }
 }
