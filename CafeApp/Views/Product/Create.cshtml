@@ -20,34 +20,9 @@
         @Html.TextBoxFor(model => model.ImageSrc, new { @class = "form-control" })
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Type)
-        @Html.DropDownListFor(model => model.Type, new SelectList(new List<string> { "Beverage", "Dessert" }), "Select Type", new { @class = "form-control", id = "productType" })
-    </div>
-
-    <div id="beverageOptions" style="display:none">
-        @Html.LabelFor(model => model.Option)
-        @Html.DropDownListFor(model => model.Option, new SelectList(new List<string> { "Tall", "Grande", "Venti" }), "Select Size", new { @class = "form-control" })
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PriceTall, "Price for Tall")
-            @Html.EditorFor(model => model.PriceTall, new { htmlAttributes = new { @class = "form-control" }})
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PriceGrande, "Price for Grande")
-            @Html.EditorFor(model => model.PriceGrande, new { htmlAttributes = new { @class = "form-control" }})
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PriceVenti, "Price for Venti")
-            @Html.EditorFor(model => model.PriceVenti, new { htmlAttributes = new { @class = "form-control" }})
-        </div>
-    </div>
-
     <div id="dessertPrice" style="display:none">
-        @Html.LabelFor(model => model.PriceDessert, "Price for Dessert")
-        @Html.EditorFor(model => model.PriceDessert, new { htmlAttributes = new { @class = "form-control" }})
+        @Html.LabelFor(model => model.Price, "Price")
+        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" }})
     </div>
 
     <input type="submit" value="Create" class="btn btn-danger" />
@@ -57,18 +32,6 @@
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script>
           $(document).ready(function () {
-            $('#productType').change(function () {
-                var selectedType = $(this).val();
-                if (selectedType == "Beverage") {
-                    $('#beverageOptions').show();
-                    $('#dessertPrice').hide();
-                } else if (selectedType == "Dessert") {
-                    $('#dessertPrice').show();
-                    $('#beverageOptions').hide();
-                } else {
-                    $('#beverageOptions').hide();
-                    $('#dessertPrice').hide();
-                }
             });
         });
     </script>

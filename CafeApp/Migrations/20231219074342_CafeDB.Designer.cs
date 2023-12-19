@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CafeApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231217202345_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20231219074342_CafeDB")]
+    partial class CafeDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,15 +35,38 @@ namespace CafeApp.Migrations
                     b.Property<bool>("IsServed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<float>("Price")
-                        .HasColumnType("REAL");
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("TableNo")
                         .HasColumnType("INTEGER");
 
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("OrderId");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("CafeApp.Models.OrderProduct", b =>
+                {
+                    b.Property<int>("OrderDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("OrderDetailId");
+
+                    b.ToTable("OrderProducts");
                 });
 
             modelBuilder.Entity("CafeApp.Models.Product", b =>
@@ -61,42 +84,12 @@ namespace CafeApp.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Option")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Price")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Type")
+                    b.Property<decimal?>("Price")
                         .HasColumnType("TEXT");
 
                     b.HasKey("ProductId");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("CafeApp.Models.SelectedProduct", b =>
-                {
-                    b.Property<int>("SelectedProductId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("SelectedProductId");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("SelectedProducts");
                 });
 
             modelBuilder.Entity("WebProject.Models.Barista", b =>
@@ -116,24 +109,6 @@ namespace CafeApp.Migrations
                     b.HasKey("BaristaId");
 
                     b.ToTable("Baristas");
-                });
-
-            modelBuilder.Entity("CafeApp.Models.SelectedProduct", b =>
-                {
-                    b.HasOne("CafeApp.Models.Order", null)
-                        .WithMany("Products")
-                        .HasForeignKey("OrderId");
-
-                    b.HasOne("CafeApp.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("CafeApp.Models.Order", b =>
-                {
-                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

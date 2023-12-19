@@ -76,12 +76,16 @@ h2 {
 }
 
 .customerBtn {
-    margin-right: 40px;
+    margin-right: 0px;
 }
 
 .customerBtn:hover {
     opacity: .8;
     transition: all 0.3s;
+}
+
+.managerBtn {
+    margin-right: 40px;
 }
 
 .managerBtn:hover {

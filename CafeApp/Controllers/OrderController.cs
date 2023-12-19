@@ -1,5 +1,6 @@
 using CafeApp.Data;
 using CafeApp.Models;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -16,40 +17,26 @@ namespace CafeApp.Controllers
             _context = cont;
         }
 
-        public async Task<IActionResult> Index()
-        {
-            List<Product> products = await _context.Products.ToListAsync();
-            return View(products);
-        }
-
-
         [HttpPost]
-        public async Task<IActionResult> AddToBag(int productId)
+        public async Task<IActionResult> AddToBag(int productId, int orderId)
         {
 
-            Console.WriteLine("HEYYYYY");
+            var existingOrderProduct = _context.OrderProducts.FirstOrDefault(op => op.OrderId == orderId && op.ProductId == productId);
 
-            Product? product = await _context.Products.FindAsync(productId);
-
-            var selectedProducts = await _context.SelectedProducts.Include(sp => sp.Product).ToListAsync();
-
-
-            if (selectedProducts != null)
+            if (existingOrderProduct != null)
             {
-                SelectedProduct? existingSP = selectedProducts.FirstOrDefault(p => p.Product != null && p.Product.ProductId == productId);
-
-                if (existingSP != null)
-                {
-                    existingSP.Quantity++;
-                }
-                else
-                {
-                    SelectedProduct newSelectedProduct = new SelectedProduct() { Product = product, Quantity = 1 };
-                    _context.SelectedProducts.Add(newSelectedProduct);
-                }
+                existingOrderProduct.Quantity++;
             }
             else
             {
+                var newOrderProduct = new OrderProduct
+                {
+                    OrderId = orderId,
+                    ProductId = productId,
+                    Quantity = 1
+                };
+
+                _context.OrderProducts.Add(newOrderProduct);
             }
 
             await _context.SaveChangesAsync();
@@ -59,82 +46,78 @@ namespace CafeApp.Controllers
 
 
         [HttpGet]
-        [Route("Order/Create")]
         public async Task<IActionResult> Create()
         {
 
             List<Product> products = await _context.Products.ToListAsync();
             Order order = new Order();
+            _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
             var tuple = Tuple.Create(products, order);
             return View(tuple);
         }
 
         [HttpPost]
-        [Route("Order/Create")]
-        public async Task<IActionResult> Create(int number, string name)
+        public async Task<IActionResult> Create(int orderId, int tableNo, string customerName, decimal totalPrice)
         {
 
             if (ModelState.IsValid)
             {
-                List<SelectedProduct> selectedProducts = await _context.SelectedProducts.Include(sp => sp.Product).ToListAsync();
-                if (selectedProducts.Count() != 0)
+
+                var order = await _context.Orders.FindAsync(orderId);
+
+                if (order != null)
                 {
-                    Order newOrder = new Order()
-                    {
-                        CustomerName = name,
-                        TableNo = number,
-                        Products = selectedProducts
-                    };
-
-                    Console.WriteLine("");
-                    Console.WriteLine(selectedProducts.First().Product?.Name);
-                    Console.WriteLine("");
-
-                    _context.Orders.Add(newOrder);
-
-
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction("MyOrder");
+                    order.TableNo = tableNo;
+                    order.CustomerName = customerName;
+                    order.OrderDate = DateTime.Now;
+                    order.TotalPrice = totalPrice;
                 }
                 else
                 {
-                    List<Product> products = await _context.Products.ToListAsync();
-                    Order order = new Order();
-                    var tuple = Tuple.Create(products, order);
-                    return View(tuple);
+                    return Json(new { success = false });
                 }
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction("MyOrder", new { id = orderId });
             }
             else
             {
-                List<Product> products = await _context.Products.ToListAsync();
-                Order order = new Order();
-                var tuple = Tuple.Create(products, order);
-                return View(tuple);
+                return Json(new { success = false });
             }
 
         }
 
         [HttpGet]
-        public async Task<IActionResult> MyOrder()
+        public async Task<IActionResult> MyOrder(int id)
         {
-            List<Order>? ordersWithItems = await _context.Orders.Include(o => o.Products!).ThenInclude(p => p.Product).ToListAsync();
 
-            return View(ordersWithItems.Last());
+            var order = await _context.Orders.FindAsync(id);
+
+            List<OrderProduct> orderProducts = _context.OrderProducts
+            .Where(op => op.OrderId == id)
+            .ToList();
+
+            List<int> productIds = orderProducts.Select(op => op.ProductId).ToList();
+
+            List<Product> products = _context.Products
+                .Where(p => productIds.Contains(p.ProductId))
+                .ToList();
+
+            Dictionary<int, int> productIdQuantityPairs = orderProducts
+                .ToDictionary(op => op.ProductId, op => op.Quantity);
+
+            var tuple = Tuple.Create(order, products, productIds, productIdQuantityPairs);
+            return View(tuple);
         }
 
 
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-                return NotFound();  //404 error
 
-            var st = await _context.Orders.FindAsync(id);
-
-            if (st == null)
-                return NotFound();
-
-            return View(st);
+            var order = await _context.Orders.FindAsync(id);
+            return View(order);
         }
 
         [HttpPost]
@@ -142,6 +125,10 @@ namespace CafeApp.Controllers
         {
             if (id == null)
                 return NotFound();
+
+            Console.WriteLine("");
+            Console.WriteLine(id);
+            Console.WriteLine("");
 
             if (ModelState.IsValid)
             {
@@ -159,6 +146,8 @@ namespace CafeApp.Controllers
 
             return View(model);
         }
+
+
         [HttpPost]
         public async Task<IActionResult> UpdateOrderStatus(Order order)
         {
@@ -183,20 +172,32 @@ namespace CafeApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
-            var o = await _context.Orders.FindAsync(id);
-            return View(o);
+            var order = await _context.Orders.FindAsync(id);
+            return View(order);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete([FromForm] int id)
+        public async Task<IActionResult> Delete([FromForm] int orderId)
         {
-            var allSP = await _context.SelectedProducts.Include(sp => sp.Product).ToListAsync();
-            _context.SelectedProducts.RemoveRange(allSP); 
-            var o = await _context.Orders.FindAsync(id);
-            if (o != null)
-                _context.Orders.Remove(o);
+
+            List<OrderProduct> orderProducts = _context.OrderProducts
+            .Where(op => op.OrderId == orderId)
+            .ToList();
+            _context.OrderProducts.RemoveRange(orderProducts);
+
+            var order = await _context.Orders.FindAsync(orderId);
+            if (order != null)
+                _context.Orders.Remove(order);
+
             await _context.SaveChangesAsync();
-            return RedirectToAction("Create");
+
+            return RedirectToAction("Success");
+        }
+
+        [HttpGet]
+        public IActionResult Success()
+        {
+            return View();
         }
     }
 }
