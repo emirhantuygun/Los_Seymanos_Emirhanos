@@ -16,7 +16,7 @@ namespace CafeApp.Controllers
 
         [HttpGet]
         [Route("Product/Create")]
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             return View();
         }
@@ -25,7 +25,7 @@ namespace CafeApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("Product/Create")]
-        public async Task<IActionResult> Create([Bind("ProductId,Name,ImageSrc,Option,Type,Details,PriceTall,PriceGrande,PriceVenti,PriceDessert")] Product product)
+        public async Task<IActionResult> Create([Bind("ProductId,Name,ImageSrc,Option,Type,Details,PriceTall,PriceGrande,PriceVenti,Price")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -58,7 +58,7 @@ namespace CafeApp.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductId,Name,ImageSrc,Option,Type,Details,PriceTall,PriceGrande,PriceVenti,PriceDessert")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductId,Name,ImageSrc,Option,Type,Details,PriceTall,PriceGrande,PriceVenti,Price")] Product product)
         {
             if (id != product.ProductId)
             {

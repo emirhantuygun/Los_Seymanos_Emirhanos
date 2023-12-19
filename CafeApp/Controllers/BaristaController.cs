@@ -34,9 +34,8 @@ namespace CafeApp.Controllers
                     return RedirectToAction("OrderList");
                 }
                 else{
-                    TempData["Error Message"] = "Invalid email or password";
 
-                    
+                    TempData["Error Message"] = "Invalid email or password!";
                 }
 
             }
@@ -52,6 +51,8 @@ namespace CafeApp.Controllers
             var orders = await _context.Orders.ToListAsync();
             return View(orders);
         }
+
+
         [HttpGet]
         public async Task<IActionResult> OrderDetails(int? id)
         {
@@ -61,7 +62,6 @@ namespace CafeApp.Controllers
             }
 
             var order = await _context.Orders
-                .Include(o => o.Products) // Varsa siparişe bağlı ürünleri de dahil edin
                 .FirstOrDefaultAsync(m => m.OrderId == id);
 
             if (order == null)
@@ -71,6 +71,7 @@ namespace CafeApp.Controllers
 
             return View(order);
         }
+        
          // GET: Barista/ProductList
          [HttpGet]
         public async Task<IActionResult> ProductList()
@@ -79,8 +80,6 @@ namespace CafeApp.Controllers
             return View(products);
         }
        
-
-
 
     }
 }

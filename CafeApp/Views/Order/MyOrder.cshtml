@@ -1,5 +1,4 @@
-@model Order
-
+@model Tuple<Order, List<Product>, List<int>, Dictionary<int, int>>
 
 
 <h2>My Order</h2>
@@ -7,71 +6,52 @@
 <table class="table">
   <thead>
     <tr>
-      <th>Order Id</th>
-      <th>Table Number</th>
       <th>Customer Name</th>
+      <th>Table Number</th>
+      <th>Order Time</th>
       <th>Products</th>
       <th>Total Price</th>
     </tr>
   </thead>
   <tbody>
-      <tr>
-        <td>@Model.OrderId</td>
-        <td>@Model.TableNo</td>
-        <td>@Model.CustomerName</td>
+    <tr>
+      <td>@Model.Item1.CustomerName</td>
+      <td>@Model.Item1.TableNo</td>
       <td>
-    @{
-        decimal totalPrice = 0;
-        if (Model.Products != null && Model.Products.Any())
-        {
-            foreach (var sp in Model.Products)
-            {
-                string productName = sp.Product?.Name ?? "Product Name is null";
-                string productOption = sp.Product?.Option ?? string.Empty;
-                decimal productPrice = 0;
+        @{
+          int hours = Model.Item1.OrderDate.Hour;
+          int minutes = Model.Item1.OrderDate.Minute;
 
-                switch (sp.Product?.Type)
-                {
-                    case "Beverage":
-                        switch (productOption)
-                        {
-                            case "Tall":
-                                productPrice = sp.Product.PriceTall ?? 0;
-                                break;
-                            case "Grande":
-                                productPrice = sp.Product.PriceGrande ?? 0;
-                                break;
-                            case "Venti":
-                                productPrice = sp.Product.PriceVenti ?? 0;
-                                break;
-                        }
-                        break;
-                    case "Dessert":
-                        productPrice = sp.Product.PriceDessert ?? 0;
-                        break;
-                }
+          string formattedHours = hours < 10 ? "0" + hours.ToString() : hours.ToString();
+          string formattedMinutes = minutes < 10 ? "0" + minutes.ToString() : minutes.ToString();
 
-                <span>@productName @productOption  @(sp.Quantity)x &nbsp;&nbsp; $@productPrice</span><br>
-                totalPrice += productPrice * sp.Quantity;
-            }
+          string currentTimeString = formattedHours + ":" + formattedMinutes;
         }
-    }
-</td>
-<td>
-    <span>$@totalPrice</span>
-</td>
+        @currentTimeString
+      </td>
+      <td>
+        @{
+          foreach (var product in Model.Item2)
+          {
+            <span>@product.Name @Model.Item4[product.ProductId]x &nbsp;&nbsp;
+              $@(product.Price * Model.Item4[product.ProductId])</span>
 
-
-      
-        <td>
-          <a asp-controller="Order" asp-action="Edit" asp-route-id="@Model.OrderId"
-            class="btn btn-primary btn-sm">Edit</a>
-          <a asp-controller="Order" asp-action="Delete" asp-route-id="@Model.OrderId"
-            class="btn btn-danger btn-sm">Delete</a>
-        </td>
-      </tr>
+            <br>
+          }
+        }
+      </td>
+      <td>
+        <span>$@Model.Item1.TotalPrice</span>
+      </td>
+      <td>
+        <a asp-controller="Order" asp-action="Edit" asp-route-id="@Model.Item1.OrderId"
+          class="btn btn-primary btn-sm">Edit</a>
+        <a asp-controller="Order" asp-action="Delete" asp-route-id="@Model.Item1.OrderId"
+          class="btn btn-danger btn-sm">Delete</a>
+      </td>
+    </tr>
   </tbody>
 </table>
 
 
-<a href="/Order/Create" class="btn btn-primary">Create a New Order!</a>
+

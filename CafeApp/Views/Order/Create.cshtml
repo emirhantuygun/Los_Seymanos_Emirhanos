@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="~/css/index.css">
+    <link rel="stylesheet" href="~/css/create.css">
     <title>Product List</title>
 </head>
 
@@ -15,40 +15,17 @@
         <div class="row justify-content-center">
             <div id="ProductsList" class="col-8">
                 @{
-                    var groupedProducts = Model.Item1.GroupBy(p => p.Name);
-
-                    foreach (var group in groupedProducts)
+                    foreach (var product in Model.Item1)
                     {
-                        var firstProduct = group.First();
-                        if (group.Count() == 1 || firstProduct.Type == "Dessert")
-                        {
-                            decimal price = firstProduct.Type == "Dessert" ? firstProduct.PriceDessert ?? 0 : 0;
-
-                            <div class="product-card">
-                                <img src="@firstProduct.ImageSrc" alt="@firstProduct.Name">
-                                <h2>@firstProduct.Name</h2>
-                                <p>$ @price</p>
-                                <button class="bagButton" onclick="addToBag(@firstProduct.ProductId); printOrderDetails('@firstProduct.Name', @price);">Add to Bag</button>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="product-card">
-                                <img src="@firstProduct.ImageSrc" alt="@firstProduct.Name">
-                                <h2>@firstProduct.Name</h2>
-                                @foreach (var product in group)
-                                {
-                                    decimal price = product.Option == "Tall" ? product.PriceTall ?? 0 :
-                                                    product.Option == "Grande" ? product.PriceGrande ?? 0 :
-                                                    product.PriceVenti ?? 0;
-                                    
-                                    <input type="radio" name="@firstProduct.ProductId" id="@product.ProductId" title="@product.Name" placeholder="@product.Option" value="@price">
-                                    <label for="@product.ProductId">@product.Option &nbsp; $@price</label><br>
-                                }
-                                <button class="bagButton" onclick="trigger('@firstProduct.ProductId')">Add to Bag</button>
-                            </div>
-                        }
-                    }
+                        <div class="product-card">
+                            <img src="@product.ImageSrc" alt="@product.Name">
+                            <h2>@product.Name</h2>
+                            <p>$ @product.Price</p>
+                            <button class="bagButton"
+                                onclick="addToBag(@product.ProductId, @Model.Item2.OrderId); printOrderDetails('@product.Name', @product.Price);">Add
+                                to Bag</button>
+                        </div>
+                    }                
                 }
             </div>
 
@@ -57,18 +34,26 @@
 
             <div class="col-4">
                 <div id="OrderForm" class="row">
-                    <form asp-controller="Order" asp-action="Create" method="post">
+                    <form asp-controller="Order" asp-action="Create" method="post" onsubmit="return check()">
+                        <div>
+                            <input asp-for="Item2.OrderId" type="hidden" name="orderId" class="form-control" value="@Model.Item2.OrderId">
+                        </div>
+
                         <div>
                             <label asp-for="Item2.TableNo" class="form-label">Table Number</label>
-                            <input asp-for="Item2.TableNo" name="number" class="form-control" required>
+                            <input asp-for="Item2.TableNo" name="tableNo" class="form-control" required>
                         </div>
 
                         <div>
                             <label asp-for="Item2.CustomerName" class="form-label">Customer Name</label>
-                            <input asp-for="Item2.CustomerName" name="name" class="form-control" required>
+                            <input asp-for="Item2.CustomerName" name="customerName" class="form-control" required>
                         </div>
 
-                        <button type="submit" onclick="check()" class="btn btn-primary">Order</button>
+                        <div>
+                            <input asp-for="Item2.TotalPrice" type="hidden" id="totalPrice" name="totalPrice" class="form-control" value="0">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Order</button>
                     </form>
                 </div>
                 <br>
@@ -88,30 +73,14 @@
 
     <script>
 
-        function trigger(inputId) {
-            var selectedRadio = document.querySelector(`input[name="${inputId}"]:checked`);
-            if (selectedRadio) {
-                var id = selectedRadio.id;
-                var name = selectedRadio.title;
-                var price = selectedRadio.value;
-                var option = selectedRadio.placeholder;
-
-                addToBag(id);
-                printOrderDetails(name, price, option);
-            }
-            else (
-                alert("Please Choose an Option!")
-            )
-        }
-
-        function addToBag(productId) {
+        function addToBag(productId, orderId) {
 
             console.log("Adding to bag:", productId);
 
             $.ajax({
                 type: "POST",
                 url: "/Order/AddToBag",
-                data: { productId: productId },
+                data: { productId: productId, orderId: orderId },
                 success: function (response) {
                     // Handle success if needed
                 },
@@ -142,16 +111,21 @@
             var total = document.getElementById("total");
             var totalPrice = parseInt(total.textContent.substring(2)) + parseInt(price);
             total.textContent = `$ ${totalPrice}`;
-
         }
 
         function check() {
             var total = document.getElementById("total");
             var totalPrice = parseInt(total.textContent.substring(2));
-            if(totalPrice == 0){
-                alert("Please Choose a Product!");
+            if (totalPrice == 0) {
+                alert("Please choose a product!");
+                return false;
+            }
+            else{
+                document.getElementById("totalPrice").setAttribute("value", totalPrice);
+                return true;
             }
         }
+
     </script>
 </body>
 

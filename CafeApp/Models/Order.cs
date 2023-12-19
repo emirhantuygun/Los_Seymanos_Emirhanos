@@ -12,9 +12,10 @@ namespace CafeApp.Models
         public int OrderId { get; set; }
         public int? TableNo { get; set; }
         public string? CustomerName { get; set; }
-        
-        public List<SelectedProduct>? Products { get; set; }
-        public float Price {get; set;}
+
+        public DateTime OrderDate { get; set; }
+
+        public decimal TotalPrice {get; set;}
         public bool IsServed { get; set; }
         public bool IsPaid { get; set; }
 

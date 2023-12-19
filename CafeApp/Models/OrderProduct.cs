@@ -5,23 +5,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CafeApp.Models
 {
-    public class Product
+    public class OrderProduct
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int OrderDetailId { get; set; }
+
+        [ForeignKey("Order")]
+        public int OrderId { get; set; }
+        [ForeignKey("Product")]
         public int ProductId { get; set; }
-
-        [BindProperty]
-        public string? Name { get; set; }
-        
-        [BindProperty]
-        public string? ImageSrc { get; set; }
-
-        [BindProperty]
-        public string? Details { get; set; }
-
-        [BindProperty]
-        public decimal? Price { get; set; }
-
+        public int Quantity { get; set; }
     }
 }

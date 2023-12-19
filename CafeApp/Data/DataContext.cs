@@ -11,7 +11,7 @@ namespace CafeApp.Data
 
         public DbSet<Product> Products { get; set; }
 
-        public DbSet<SelectedProduct> SelectedProducts { get; set; }
+        public DbSet<OrderProduct> OrderProducts { get; set; }
 
         public DbSet<Barista> Baristas { get; set; }
 
@@ -23,5 +23,4 @@ namespace CafeApp.Data
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
     }
-
 }
