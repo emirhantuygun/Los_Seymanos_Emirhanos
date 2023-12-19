@@ -13,12 +13,13 @@ h1 {
 
 body {
     background-color: #F8F8F8;
-    height: 100vh;
-    margin: 0;
-    position: relative;
     color: #2E2928;
     font-family: 'Lato', sans-serif;
-    padding: 0 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 90vh;
+    margin: 0;
 }
 
 .cup {
@@ -32,9 +33,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-    top: 40%;
-    transform: translateY(-50%);
     flex-direction: column;
 }
 
@@ -44,8 +42,8 @@ body {
     margin-bottom: 15px;
 }
 
-.right-intro{
-    margin-top:30px;
+.right-intro {
+    margin-top: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -109,7 +107,7 @@ h2 {
     padding: 8px;
 }
 
-.loginInput:focus{
+.loginInput:focus {
     transition: all 0.3s;
     outline: 1px dashed #8B4513;
 }
