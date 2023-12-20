@@ -1,39 +1,54 @@
-@model CafeApp.Models.Order
+@model Tuple<Order, List<Product>, List<int>, Dictionary<int, int>>
 
-@{
-    ViewData["Title"] = "Order Details";
-}
 
 <h2>Order Details</h2>
 <hr>
 
 <form asp-controller="Order" asp-action="UpdateOrderStatus" method="post">
-    @Html.HiddenFor(model => model.OrderId)
 
+
+    <div>
+    <input asp-for="Item1.OrderId" type="hidden" name="orderId" class="form-control"value="@Model.Item1.OrderId">
+    </div>
     <div class="form-group">
         <label>Table No:</label>
-        <p>@Model.TableNo</p>
+        <p>@Model.Item1.TableNo</p>
     </div>
 
     <div class="form-group">
         <label>Customer Name:</label>
-        <p>@Model.CustomerName</p>
+        <p>@Model.Item1.CustomerName</p>
     </div>
+
     <div class="form-group">
-        <label>Selected Product</label>
-        @* <p>@Model.Products</p>    Controller'dan bir Product listesi göndermen lazım. OrderController myOrder action metotundaki kodları kullanabilirsin. *@
+        <label>Order Date:</label>
+       <p>@Model.Item1.OrderDate.ToString("hh:mm tt")</p>
+    </div>
+
+    <div class="form-group">
+        <label>Selected Products:</label>
+        <ul>
+            @foreach (var product in Model.Item2)
+            {
+                <li>
+                    @product.Name (@Model.Item4[product.ProductId] x)
+                </li>
+            }
+        </ul>
     </div>
 
     <div class="form-group">
         <label>Is Served:</label>
-        @Html.CheckBoxFor(model => model.IsServed)
+        <input type="checkbox" name="IsServed" value="true" @(Model.Item1.IsServed ? "checked='checked'" : "") />
+
     </div>
 
     <div class="form-group">
         <label>Is Paid:</label>
-        @Html.CheckBoxFor(model => model.IsPaid)
+        <input type="checkbox" name="IsPaid" value="true" @(Model.Item1.IsPaid ? "checked='checked'" : "") />
     </div>
 
-   
-    <button type="submit" class="btn btn-primary">Update Order</button>
-</form>
+    <button type="submit" class="btn btn-primary">Update Order Status</button>
+</form>         
+
+

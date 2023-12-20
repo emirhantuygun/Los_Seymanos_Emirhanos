@@ -148,24 +148,25 @@ namespace CafeApp.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> UpdateOrderStatus(Order order)
+         [HttpPost]
+        public async Task<IActionResult> UpdateOrderStatus(int orderId, bool isServed, bool isPaid)
         {
-            if (ModelState.IsValid)
+            var order = await _context.Orders.FindAsync(orderId);
+            if (order == null)
             {
-                var existingOrder = await _context.Orders.FindAsync(order.OrderId);
-                if (existingOrder != null)
-                {
-                    existingOrder.IsServed = order.IsServed;
-                    existingOrder.IsPaid = order.IsPaid;
-                    // Diğer güncellemeler...
-
-                    _context.Update(existingOrder);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction("OrderList", "Barista");
-                }
+                return NotFound();
             }
-            return View(order);
+
+          
+            order.IsServed = isServed;
+            order.IsPaid = isPaid;
+
+            
+            _context.Update(order);
+            await _context.SaveChangesAsync();
+
+       
+            return RedirectToAction("OrderList", "Barista"); 
         }
 
 

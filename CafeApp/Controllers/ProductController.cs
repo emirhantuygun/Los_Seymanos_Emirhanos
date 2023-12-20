@@ -58,7 +58,7 @@ namespace CafeApp.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductId,Name,ImageSrc,Option,Type,Details,PriceTall,PriceGrande,PriceVenti,Price")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductId,Name,ImageSrc,Details,Price")] Product product)
         {
             if (id != product.ProductId)
             {

@@ -56,20 +56,23 @@ namespace CafeApp.Controllers
         [HttpGet]
         public async Task<IActionResult> OrderDetails(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+             var order = await _context.Orders.FindAsync(id);
 
-            var order = await _context.Orders
-                .FirstOrDefaultAsync(m => m.OrderId == id);
+            List<OrderProduct> orderProducts = _context.OrderProducts
+            .Where(op => op.OrderId == id)
+            .ToList();
 
-            if (order == null)
-            {
-                return NotFound();
-            }
+            List<int> productIds = orderProducts.Select(op => op.ProductId).ToList();
 
-            return View(order);
+            List<Product> products = _context.Products
+                .Where(p => productIds.Contains(p.ProductId))
+                .ToList();
+
+            Dictionary<int, int> productIdQuantityPairs = orderProducts
+                .ToDictionary(op => op.ProductId, op => op.Quantity);
+
+            var tuple = Tuple.Create(order, products, productIds, productIdQuantityPairs);
+            return View(tuple);
         }
         
          // GET: Barista/ProductList
