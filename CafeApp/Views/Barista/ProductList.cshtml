@@ -17,9 +17,11 @@
     <tbody>
     @foreach (var product in Model)
     {
+        var imageUrl = $"../images/product_{product.ProductId}.jpg";
+
         <tr>
             <td>
-                <img src="@product.ImageSrc" alt="@product.Name" style="width: 100px; height: auto;">
+                <img src="@imageUrl" alt="@product.Name" style="width: 100px; height: auto;">
             </td>
             <td>@product.Name</td>
             <td>
