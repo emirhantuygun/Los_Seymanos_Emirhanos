@@ -9,11 +9,30 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital@0;1&display=swap" rel="stylesheet">
+
 </head>
 
-<body>
+<body id="body">
     @RenderBody()
 </body>
 
 </html>
+
+<script>
+    @if (ViewData["Title"]?.ToString() == "Login")
+    {
+        @:var body = document.getElementById("body");
+        @:var image = document.createElement("img");
+        @:image.src = "../images/logo.png";
+        @:image.style.position = "absolute";
+        @:image.style.top = "50%";
+        @:image.style.left = "50%";
+        @:image.style.opacity = "0.1";
+        @:image.style.transform = "translate(-130%, -80%)";
+        @:image.style.zIndex = "-1";
+
+        @:body.appendChild(image);
+        
+    }
+</script>

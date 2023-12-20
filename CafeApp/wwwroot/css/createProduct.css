@@ -1,20 +1,21 @@
 .productsContainer {
-    width: 50%;
-    height: 59vh;
+    width: 70%;
+    height: 74vh;
     overflow: auto;
     padding-right: 30px;
+    padding-left: 20px;
 }
 
-.productsContainer::-webkit-scrollbar {
+.productsContainer::-webkit-scrollbar, .tableContainer::-webkit-scrollbar {
     width: 10px;
 }
 
-.productsContainer::-webkit-scrollbar-thumb {
+.productsContainer::-webkit-scrollbar-thumb, .tableContainer::-webkit-scrollbar-thumb {
     background-color: #2e292873;
     border-radius: 6px;
 }
 
-.productsContainer::-webkit-scrollbar-track {
+.productsContainer::-webkit-scrollbar-track, .tableContainer::-webkit-scrollbar-track {
     background-color: #f1f1f1;
 }
 
@@ -32,20 +33,19 @@
 
 .product {
     margin-bottom: 45px;
-    background-image: url("../images/product.jpg");
+    background-image: url("../images/latte.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;
     width: 32%;
     padding: 15px;
-    cursor: pointer;
     transition: all 0.3s;
     height: 215px;
     border-radius: 30px;
     color: #f8f8f8;
     box-shadow: 0px 12px 12px rgba(0, 0, 0, 0.15);
-    font-size: 22px;
+    font-size: 24px;
 }
 
 .productInfo {
@@ -64,7 +64,7 @@
     height: 100%;
     border-radius: 30px;
     z-index: 0;
-    opacity: .8;
+    opacity: .5;
 }
 
 .Wrapper {
@@ -79,6 +79,7 @@
     width: 25%;
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-direction: column;
 }
 
@@ -94,8 +95,93 @@
     right: 15px;
     bottom: 15px;
     display: flex;
+    flex-direction: column;
 }
 
 .controlBag input {
+    width: 45px;
+    height: 35px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    background: none;
+    border: none;
+    color: #f8f8f8;
+}
+
+.controlBag button {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    border-radius: 15px;
+    background-color: #f8f8f8;
+    color: #2E2928;
+}
+
+.pricep{
+    margin-top: 90px;
     width: 60px;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginInput {
+    background-color: #2e292827;
+    width: 15vw;
+    height: 5vh;
+    font-size: 14px;
+    padding: 8px;
+    border: none;
+}
+
+.loginInput:first-child{
+    margin-bottom: 15px;
+}
+
+.loginInput:focus{
+    transition: all 0.3s;
+    outline: 1px dashed #2E2928;
+}
+
+.loginInput::placeholder {
+    color: #2E2928;
+    opacity: .7;
+}
+
+.orderButton {
+    background-color: #b80f2b;
+    color: #f8f8f8;
+    border: none;
+    width: 10vw;
+    height: 5vh;
+    transition: all 0.3s;
+    margin-top: 15px;
+    font-family: 'Raleway', sans-serif;
+    border-radius: 14px;
+}
+
+.orderButton:hover{
+    opacity: .8;
+}
+
+.addedRow{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #2E2928;
+}
+
+.nameElement{
+    max-width: 25px;
 }

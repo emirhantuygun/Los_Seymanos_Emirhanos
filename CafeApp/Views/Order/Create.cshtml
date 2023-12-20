@@ -6,26 +6,35 @@
 
 <link rel="stylesheet" href="~/css/createProduct.css">
 
+
 <div class="Wrapper">
     <div class="productsContainer">
         <div id="ProductsList">
             @{
                 foreach (var product in Model.Item1)
                 {
-                    <div id="product" class="product">
+                    var imageUrl = $"../images/product_{product.ProductId}.jpg";
+                    <div id="product" class="product" style="background-image: url('@imageUrl');">
                         <div class="productInfo">
                             <p>@product.Name</p>
-                            <p>$ @product.Price</p>
+                            <div style="position: relative;">
+                                <p style="z-index: 4; position: relative;" class="pricep">$ @product.Price</p>
+                                <div
+                                    style="background-image: url(../images/price.svg); width: 130px; height: 100px; position: absolute;
+                                                                                                    top: 45px; left: -100px; rotate: 230deg; transform-origin: top; background-repeat: no-repeat; background-position: center;
+                                                                                                    background-size: cover;">
+                                </div>
+                            </div>
                         </div>
                         <div class="filter"></div>
                         <div class="controlBag">
                             <button
-                                onclick="removeFromBag(@product.ProductId, @Model.Item2.OrderId, '@product.Name', @product.Price);"
-                                class="bagButton" disabled>-</button>
-                            <input id="quantityInput_@product.ProductId" value="0" type="number">
-                            <button
                                 onclick="addToBag(@product.ProductId, @Model.Item2.OrderId, '@product.Name', @product.Price);"
                                 class="bagButton" disabled>+</button>
+                            <input id="quantityInput_@product.ProductId" value="0" type="number" readonly>
+                            <button
+                                onclick="removeFromBag(@product.ProductId, @Model.Item2.OrderId, '@product.Name', @product.Price);"
+                                class="bagButton" disabled>-</button>
                         </div>
                     </div>
                 }
@@ -36,37 +45,52 @@
 
     <div class="right">
         <div id="OrderForm">
-            <form asp-controller="Order" asp-action="Create" method="post" onsubmit="return check()">
+            <form class="form" asp-controller="Order" asp-action="Create" method="post" onsubmit="return check()">
                 <div>
                     <input asp-for="Item2.OrderId" type="hidden" name="orderId" value="@Model.Item2.OrderId">
                 </div>
 
                 <div>
-                    <label asp-for="Item2.TableNo" class="form-label">Table Number</label>
-                    <input asp-for="Item2.TableNo" name="tableNo" required>
+                    <input class="loginInput" asp-for="Item2.TableNo" name="tableNo" required
+                        placeholder="Table Number">
                 </div>
 
                 <div>
-                    <label asp-for="Item2.CustomerName" class="form-label">Customer Name</label>
-                    <input asp-for="Item2.CustomerName" name="customerName" required>
+                    <input class="loginInput" asp-for="Item2.CustomerName" name="customerName" required
+                        placeholder="Customer Name">
                 </div>
 
                 <div>
                     <input asp-for="Item2.TotalPrice" type="hidden" id="totalPrice" name="totalPrice" value="0">
                 </div>
 
-                <button type="submit">Order</button>
+                <button class="orderButton" type="submit">Order</button>
             </form>
         </div>
         <br>
         <br>
-        <div id="OrderDetails">
-            <table id="tbl">
-                <tr>
-                    <th>Total:</th>
-                    <th id="total">$ 0</th>
-                </tr>
-            </table>
+        <div style="background-image: url(../images/OrderNote.svg); background-position: center; 
+            background-repeat: no-repeat; background-size: cover; width: 350px; height: 470px;
+            padding-top: 75px; padding-left: 45px; padding-bottom: 100px; position: relative;
+            margin-left: 35px;" id="OrderDetails">
+
+            <div class="tableContainer" style="height: 100%; overflow: auto; width: 78%; padding-right: 15px;">
+                <table style=" position: relative; width: 100%; display: flex; flex-direction: column;
+                        justify-content: space-between;" id="tbl">
+                    <tr style="display: flex; justify-content: space-between; align-items: center; 
+                    border-bottom: 1px solid #b80f2b; margin-bottom: 15px;">
+                        <td style="font-family: 'Raleway', sans-serif;">Name</td>
+                        <td style="font-family: 'Raleway', sans-serif;">Quantity</td>
+                        <td style="font-family: 'Raleway', sans-serif;">Price</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="position: absolute;
+                    bottom: 15%; left: 30%; font-family: 'Raleway', sans-serif;">Total:</div>
+            <div style="position: absolute;
+                    bottom: 15%; left: 50%;" id="total">$ 0</div>
+
         </div>
     </div>
 </div>
@@ -120,9 +144,11 @@
         if (!addedProducts.includes(name) && quantity != 0) {
             var tableRow = document.createElement("tr");
             tableRow.id = productId * 100;
+            tableRow.classList.add("addedRow");
 
             var nameElement = document.createElement("td");
             nameElement.textContent = name;
+            nameElement.classList.add("nameElement");
 
             var priceElement = document.createElement("td");
             priceElement.id = `${productId * 10}`;
@@ -132,11 +158,12 @@
             var quantityElement = document.createElement("td");
             quantityElement.id = `${productId}`;
             quantityElement.textContent = quantity + "x";
+            quantityElement.classList.add("quantityElement");
 
             tableRow.appendChild(nameElement);
-            tableRow.appendChild(priceElement);
             tableRow.appendChild(quantityElement);
-            table.insertBefore(tableRow, table.lastChild);
+            tableRow.appendChild(priceElement);
+            table.appendChild(tableRow);
 
             addedProducts.push(name);
         }
@@ -145,7 +172,7 @@
             var priceElement = document.getElementById(`${productId * 10}`);
 
             quantityElement.textContent = quantity + "x";
-            priceElement.textContent = "$ " + `${price}` * quantity;
+            priceElement.textContent = `$ ${price * quantity}`;
         }
 
         var total = document.getElementById("total");
@@ -154,6 +181,7 @@
 
         allPrices.forEach(priceElement => {
             var price = parseInt(priceElement.textContent.substring(2));
+
             totalPrice += price;
 
             if (price == 0) {
@@ -173,7 +201,7 @@
 
     function check() {
         var total = document.getElementById("total");
-        var totalPrice = parseInt(total.textContent.substring(2));
+        var totalPrice = parseFloat(total.textContent.replace('$', '').trim());
         if (totalPrice == 0) {
             alert("Please choose a product!");
             return false;

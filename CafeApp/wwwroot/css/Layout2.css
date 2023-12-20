@@ -7,18 +7,19 @@
 }
 
 h1 {
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 48px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 44px;
 }
 
 body {
     background-color: #F8F8F8;
-    height: 100vh;
-    margin: 0;
-    position: relative;
     color: #2E2928;
     font-family: 'Lato', sans-serif;
-    padding: 0 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 90vh;
+    margin: 0;
 }
 
 .cup {
@@ -32,9 +33,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-    top: 40%;
-    transform: translateY(-50%);
     flex-direction: column;
 }
 
@@ -44,8 +42,8 @@ body {
     margin-bottom: 15px;
 }
 
-.right-intro{
-    margin-top:30px;
+.right-intro {
+    margin-top: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -54,7 +52,7 @@ body {
 
 h2 {
     font-size: 36px;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'Raleway', sans-serif;
     margin-bottom: 60px;
 }
 
@@ -67,7 +65,7 @@ h2 {
     width: 10vw;
     height: 5vh;
     font-size: 24px;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'Raleway', sans-serif;
     border: none;
     background-color: #b80f2b;
     text-decoration: none;
@@ -102,16 +100,21 @@ h2 {
 }
 
 .loginInput {
-    background-color: #8b45132a;
-    width: 14vw;
-    height: 4vh;
+    background-color: #2e292827;
+    width: 15vw;
+    height: 5vh;
     font-size: 14px;
     padding: 8px;
+    border: none;
 }
 
-.loginInput:focus{
+.loginInput:first-child {
+    margin-bottom: 15px;
+}
+
+.loginInput:focus {
     transition: all 0.3s;
-    outline: 1px dashed #8B4513;
+    outline: 1px dashed #2E2928;
 }
 
 .loginInput::placeholder {
@@ -124,12 +127,15 @@ h2 {
 }
 
 .loginBtn {
+    background-color: #b80f2b;
+    color: #f8f8f8;
+    border: none;
     width: 10vw;
     height: 5vh;
-    margin-top: 5px;
-    background-color: #2E2928;
-    color: #F8F8F8;
-
+    transition: all 0.3s;
+    margin-top: 15px;
+    font-family: 'Raleway', sans-serif;
+    border-radius: 14px;
 }
 
 .loginBtn:hover {
@@ -139,8 +145,9 @@ h2 {
 }
 
 .loginHeader {
-    margin-bottom: 54px;
+    margin-bottom: 15px;
     font-size: 48px;
+    font-family: 'Raleway', sans-serif;
 }
 
 .error-message {

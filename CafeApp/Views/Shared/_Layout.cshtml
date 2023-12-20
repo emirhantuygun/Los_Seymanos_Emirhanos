@@ -8,14 +8,18 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/EfCoreApp.styles.css" asp-append-version="true" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital@0;1&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <header>
         <nav>
             <div>
-                <a asp-controller="Order" asp-action="Create"><img src="/images/logo.png" alt="Logo" width="120px"
-                        height="120px" class="logo"></a>
+                <a asp-controller="Order" asp-action="Create"><img src="/images/logo.png" alt="Logo" width="100px"
+                        height="100px" class="logo"></a>
                 <h1>@ViewData["Header"]</h1>
                 <div></div>
             </div>
