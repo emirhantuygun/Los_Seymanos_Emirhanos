@@ -1,0 +1,26 @@
+@model WebProject.Models.Barista
+@{
+    ViewData["Title"] = "Sign Up";
+}
+<link rel="stylesheet" href="~/css/signup.css">
+
+<div class="signup-container">
+    <h2 class="signup-title">Sign Up</h2>
+    <hr>
+    <div class="wrapper">
+        <form asp-action="Signup" method="post" class="signup-form">
+            <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" type="password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+        </form>
+    </div>
+</div>

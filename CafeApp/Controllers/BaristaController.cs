@@ -43,6 +43,26 @@ namespace CafeApp.Controllers
             return View();
         }
 
+        //create new admin
+
+        public IActionResult Signup()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Signup([Bind("Email,Password")] Barista barista)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(barista);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Login)); 
+            }
+            return View(barista);
+        }
+
 
         //SHOW ORDERS
         [HttpGet]
