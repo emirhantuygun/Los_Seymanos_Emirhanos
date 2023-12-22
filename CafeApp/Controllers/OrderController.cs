@@ -144,9 +144,20 @@ namespace CafeApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
+            List<OrderProduct> orderProducts = _context.OrderProducts
+           .Where(op => op.OrderId == id)
+           .ToList();
 
+            List<Product> products = await _context.Products.ToListAsync();
             var order = await _context.Orders.FindAsync(id);
-            return View(order);
+
+            Dictionary<int, int> productIdQuantityPairs = orderProducts
+                .ToDictionary(op => op.ProductId, op => op.Quantity);
+
+            var tuple = Tuple.Create(products, order, productIdQuantityPairs);
+
+
+            return View(tuple);
         }
 
         [HttpPost]
@@ -177,7 +188,7 @@ namespace CafeApp.Controllers
         }
 
 
-         [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> UpdateOrderStatus(int orderId, bool isServed, bool isPaid)
         {
             var order = await _context.Orders.FindAsync(orderId);
@@ -186,16 +197,16 @@ namespace CafeApp.Controllers
                 return NotFound();
             }
 
-          
+
             order.IsServed = isServed;
             order.IsPaid = isPaid;
 
-            
+
             _context.Update(order);
             await _context.SaveChangesAsync();
 
-       
-            return RedirectToAction("OrderList", "Barista"); 
+
+            return RedirectToAction("OrderList", "Barista");
         }
 
 

@@ -13,7 +13,7 @@
             @{
                 foreach (var product in Model.Item1)
                 {
-                    var imageUrl = $"../images/product_{product.ProductId}.jpg";
+                    var imageUrl = Url.Content($"~/images/product_{product.ProductId}.jpg");
                     <div id="product" class="product" style="background-image: url('@imageUrl');">
                         <div class="productInfo">
                             <p>@product.Name</p>
@@ -69,7 +69,7 @@
         </div>
         <br>
         <br>
-        <div style="background-image: url(../images/OrderNote.svg); background-position: center; 
+        <div style="background-image: url('@Url.Content("~/images/OrderNote.svg")'); background-position: center; 
             background-repeat: no-repeat; background-size: cover; width: 350px; height: 470px;
             padding-top: 75px; padding-left: 45px; padding-bottom: 100px; position: relative;
             margin-left: 35px;" id="OrderDetails">

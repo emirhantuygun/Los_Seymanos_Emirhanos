@@ -1,16 +1,236 @@
-@model CafeApp.Models.Order
+@model Tuple<List<Product>, Order, Dictionary<int, int>>
 
-<form asp-controller="Order" asp-action="Edit" method="post">
-    <input type="hidden" asp-for="OrderId">
-    <div class="mb-3">
-        <label asp-for="TableNo" class="form-label">Table Number</label>
-        <input asp-for="TableNo" class="form-control">
+@{
+    ViewData["Header"] = "Enjoy!";
+}
+
+<link rel="stylesheet" href="~/css/createProduct.css">
+
+
+<div class="Wrapper">
+    <div class="productsContainer">
+        <div id="ProductsList">
+            @{
+                foreach (var product in Model.Item1)
+                {
+                    var imageUrl = Url.Content($"~/images/product_{product.ProductId}.jpg");
+                    <div id="product" class="product" style="background-image: url('@imageUrl');"
+                        data-product-id="@product.ProductId" data-product-name="@product.Name"
+                        data-product-price="@product.Price">
+                        <div class="productInfo">
+                            <p>@product.Name</p>
+                            <div style="position: relative;">
+                                <p style="z-index: 4; position: relative;" class="pricep">$ @product.Price</p>
+                                <div
+                                    style="background-image: url(../images/price.svg); width: 130px; height: 100px; position: absolute;
+                                                                                                                                                top: 45px; left: -100px; rotate: 230deg; transform-origin: top; background-repeat: no-repeat; background-position: center;
+                                                                                                                                                background-size: cover;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="filter"></div>
+                        <div class="controlBag">
+                            <button
+                                onclick="addToBag(@product.ProductId, @Model.Item2.OrderId, '@product.Name', @product.Price);"
+                                class="bagButton" disabled>+</button>
+                            <input id="quantityInput_@product.ProductId"
+                                value="@((Model.Item3.ContainsKey(product.ProductId) ? Model.Item3[product.ProductId] : 0))"
+                                type="number" disabled>
+                            <button
+                                onclick="removeFromBag(@product.ProductId, @Model.Item2.OrderId, '@product.Name', @product.Price);"
+                                class="bagButton" disabled>-</button>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
     </div>
 
-    <div class="mb-3">
-        <label asp-for="CustomerName" class="form-label">Customer Name</label>
-        <input asp-for="CustomerName" class="form-control">
-    </div>
+    <div class="right">
+        <div id="OrderForm">
+            <form class="form" asp-controller="Order" asp-action="Create" method="post" onsubmit="return check()">
+                <div>
+                    <input asp-for="Item2.OrderId" type="hidden" name="orderId" value="@Model.Item2.OrderId">
+                </div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
-</form>
+                <div>
+                    <input class="loginInput" asp-for="Item2.TableNo" name="tableNo" required
+                        placeholder="Table Number">
+                </div>
+
+                <div>
+                    <input class="loginInput" asp-for="Item2.CustomerName" name="customerName" required
+                        placeholder="Customer Name">
+                </div>
+
+                <div>
+                    <input asp-for="Item2.TotalPrice" type="hidden" id="totalPrice" name="totalPrice"
+                        value="@Model.Item2.TotalPrice">
+                </div>
+
+                <button class="orderButton" type="submit">Update Order</button>
+            </form>
+        </div>
+        <br>
+        <br>
+        <div style="background-image: url('@Url.Content("~/images/OrderNote.svg")'); background-position: center; 
+            background-repeat: no-repeat; background-size: cover; width: 350px; height: 470px;
+            padding-top: 75px; padding-left: 45px; padding-bottom: 100px; position: relative;
+            margin-left: 35px;" id="OrderDetails">
+
+            <div class="tableContainer" style="height: 100%; overflow: auto; width: 78%; padding-right: 15px;">
+                <table style=" position: relative; width: 100%; display: flex; flex-direction: column;
+                        justify-content: space-between;" id="tbl">
+                    <tr style="display: flex; justify-content: space-between; align-items: center; 
+                    border-bottom: 1px solid #b80f2b; margin-bottom: 15px;">
+                        <td style="font-family: 'Raleway', sans-serif;">Name</td>
+                        <td style="font-family: 'Raleway', sans-serif;">Quantity</td>
+                        <td style="font-family: 'Raleway', sans-serif;">Price</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="position: absolute;
+                    bottom: 15%; left: 30%; font-family: 'Raleway', sans-serif;">Total:</div>
+            <div style="position: absolute;
+                    bottom: 15%; left: 50%;" id="total">$ 0</div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    setTimeout(function () {
+        document.querySelectorAll('.bagButton').forEach(b => b.removeAttribute('disabled'));
+    }, 2000);
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var productElements = document.querySelectorAll('.product');
+
+        productElements.forEach(function (productElement) {
+            var productId = productElement.dataset.productId;
+            var productName = productElement.dataset.productName;
+            var productPrice = productElement.dataset.productPrice;
+            var quantityInput = document.getElementById('quantityInput_' + productId);
+            var quantity = quantityInput ? quantityInput.value : 0;
+
+            if (quantity != 0) {
+                printOrderDetails(productName, productPrice, quantity, productId);
+            }
+        });
+    });
+
+
+    function addToBag(productId, orderId, productName, productPrice) {
+        $.ajax({
+            type: "POST",
+            url: "/Order/AddToBag",
+            data: { productId: productId, orderId: orderId },
+            success: function (response) {
+                printOrderDetails(productName, productPrice, response.quantity, productId)
+                updateQuantityInput(productId, response.quantity);
+            },
+            error: function (error) {
+            }
+        });
+    }
+
+    function removeFromBag(productId, orderId, productName, productPrice) {
+        $.ajax({
+            type: "POST",
+            url: "/Order/RemoveFromBag",
+            data: { productId: productId, orderId: orderId },
+            success: function (response) {
+                printOrderDetails(productName, productPrice, response.quantity, productId);
+                updateQuantityInput(productId, response.quantity);
+            },
+            error: function (error) {
+            }
+        });
+    }
+
+    function updateQuantityInput(productId, quantity) {
+        var quantityInput = document.getElementById("quantityInput_" + productId);
+        if (quantityInput) {
+            quantityInput.value = quantity;
+        }
+    }
+
+    var addedProducts = [];
+
+    function printOrderDetails(name, price, quantity, productId) {
+        var table = document.querySelector("#tbl");
+
+        if (!addedProducts.includes(name) && quantity != 0) {
+            var tableRow = document.createElement("tr");
+            tableRow.id = productId * 100;
+            tableRow.classList.add("addedRow");
+
+            var nameElement = document.createElement("td");
+            nameElement.textContent = name;
+            nameElement.classList.add("nameElement");
+
+            var priceElement = document.createElement("td");
+            priceElement.id = `${productId * 10}`;
+            priceElement.classList.add("price");
+            priceElement.textContent = `$ ${price}`;
+
+            var quantityElement = document.createElement("td");
+            quantityElement.id = `${productId}`;
+            quantityElement.textContent = quantity + "x";
+            quantityElement.classList.add("quantityElement");
+
+            tableRow.appendChild(nameElement);
+            tableRow.appendChild(quantityElement);
+            tableRow.appendChild(priceElement);
+            table.appendChild(tableRow);
+
+            addedProducts.push(name);
+        }
+        else {
+            var quantityElement = document.getElementById(`${productId}`);
+            var priceElement = document.getElementById(`${productId * 10}`);
+
+            quantityElement.textContent = quantity + "x";
+            priceElement.textContent = `$ ${price * quantity}`;
+        }
+
+        var total = document.getElementById("total");
+        var allPrices = document.querySelectorAll(".price");
+        var totalPrice = @Model.Item2.TotalPrice;
+
+        allPrices.forEach(priceElement => {
+            var price = parseInt(priceElement.textContent.substring(2));
+
+            totalPrice += price;
+
+            if (price == 0) {
+                var tableRow = document.getElementById(`${productId}` * 100);
+                tableRow.remove();
+
+                var index = addedProducts.indexOf(name);
+
+                if (index !== -1) {
+                    addedProducts.splice(index, 1);
+                }
+            }
+        })
+
+        total.textContent = `$ ${totalPrice}`;
+    }
+
+    function check() {
+        var total = document.getElementById("total");
+        var totalPrice = parseFloat(total.textContent.replace('$', '').trim());
+        if (totalPrice == 0) {
+            alert("Please choose a product!");
+            return false;
+        }
+        else {
+            document.getElementById("totalPrice").setAttribute("value", totalPrice);
+            return true;
+        }
+    }
+</script>
