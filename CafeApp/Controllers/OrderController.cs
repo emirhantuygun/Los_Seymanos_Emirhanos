@@ -15,10 +15,31 @@ namespace CafeApp.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> UpdateDBBefore(int orderId)
+        {
+
+            var existingOrderProductList = await _context.OrderProducts.Where(op => op.OrderId == orderId).ToListAsync();
+
+            if (existingOrderProductList != null)
+                _context.OrderProducts.RemoveRange(existingOrderProductList);
+
+
+            var order = await _context.Orders.FindAsync(orderId);
+
+            if (order != null)
+                _context.Orders.Remove(order);
+            
+
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true});
+        }
+
+        [HttpPost]
         public async Task<IActionResult> AddToBag(int productId, int orderId)
         {
 
-            var existingOrderProduct = _context.OrderProducts.FirstOrDefault(op => op.OrderId == orderId && op.ProductId == productId);
+            var existingOrderProduct =  _context.OrderProducts.FirstOrDefault(op => op.OrderId == orderId && op.ProductId == productId);
 
             if (existingOrderProduct != null)
             {
@@ -50,15 +71,17 @@ namespace CafeApp.Controllers
         public async Task<IActionResult> RemoveFromBag(int productId, int orderId)
         {
 
-            var existingOrderProduct = _context.OrderProducts.FirstOrDefault(op => op.OrderId == orderId && op.ProductId == productId);
+            var existingOrderProduct = await _context.OrderProducts.FirstOrDefaultAsync(op => op.OrderId == orderId && op.ProductId == productId);
 
             if (existingOrderProduct != null)
             {
-                if (existingOrderProduct.Quantity >= 1)
+
+                if (existingOrderProduct.Quantity > 0)
                 {
                     existingOrderProduct.Quantity--;
                 }
-                else
+
+                if (existingOrderProduct.Quantity == 0)
                 {
                     _context.OrderProducts.Remove(existingOrderProduct);
                 }
@@ -221,9 +244,9 @@ namespace CafeApp.Controllers
         public async Task<IActionResult> Delete([FromForm] int orderId)
         {
 
-            List<OrderProduct> orderProducts = _context.OrderProducts
+            List<OrderProduct> orderProducts = await _context.OrderProducts
             .Where(op => op.OrderId == orderId)
-            .ToList();
+            .ToListAsync();
             _context.OrderProducts.RemoveRange(orderProducts);
 
             var order = await _context.Orders.FindAsync(orderId);
