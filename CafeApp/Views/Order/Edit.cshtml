@@ -4,6 +4,7 @@
     ViewData["Header"] = "Enjoy!";
 }
 
+
 <link rel="stylesheet" href="~/css/createProduct.css">
 
 
@@ -56,12 +57,12 @@
 
                 <div>
                     <input class="loginInput" asp-for="Item2.TableNo" name="tableNo" required
-                        placeholder="Table Number" disabled>
+                        placeholder="Table Number" readonly>
                 </div>
 
                 <div>
                     <input class="loginInput" asp-for="Item2.CustomerName" name="customerName" required
-                        placeholder="Customer Name" disabled>
+                        placeholder="Customer Name" readonly>
                 </div>
 
                 <div>
@@ -199,7 +200,7 @@
 
         var total = document.getElementById("total");
         var allPrices = document.querySelectorAll(".price");
-        var totalPrice = @Model.Item2.TotalPrice;
+        var totalPrice = parseInt(@Model.Item2.TotalPrice);
 
         allPrices.forEach(priceElement => {
             var price = parseInt(priceElement.textContent.substring(2));

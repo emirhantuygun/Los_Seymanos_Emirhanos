@@ -127,7 +127,7 @@ namespace CafeApp.Controllers
                 }
                 else
                 {
-                    return Json(new { success = false });
+                    return Json(new { success = false, str="hata 2" });
                 }
 
                 await _context.SaveChangesAsync();
@@ -135,7 +135,7 @@ namespace CafeApp.Controllers
             }
             else
             {
-                return Json(new { success = false });
+                return Json(new { success = false, str="hata 1" });
             }
 
         }

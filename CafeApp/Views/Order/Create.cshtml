@@ -21,8 +21,8 @@
                                 <p style="z-index: 4; position: relative;" class="pricep">$ @product.Price</p>
                                 <div
                                     style="background-image: url(../images/price.svg); width: 130px; height: 100px; position: absolute;
-                                                                                                        top: 45px; left: -100px; rotate: 230deg; transform-origin: top; background-repeat: no-repeat; background-position: center;
-                                                                                                        background-size: cover;">
+                                                                                                            top: 45px; left: -100px; rotate: 230deg; transform-origin: top; background-repeat: no-repeat; background-position: center;
+                                                                                                            background-size: cover;">
                                 </div>
                             </div>
                         </div>
@@ -114,7 +114,8 @@
     }
 
     window.onunload = UpdateDBBefore;
-    window.onbeforeunload = UpdateDBBefore;
+    window.addEventListener('beforeunload', UpdateDBBefore);
+    //window.onbeforeunload = UpdateDBBefore;
 
 
     function addToBag(productId, orderId, productName, productPrice) {
@@ -224,6 +225,7 @@
         }
         else {
             document.getElementById("totalPrice").setAttribute("value", totalPrice);
+            window.removeEventListener('beforeunload', UpdateDBBefore);
             return true;
         }
     }
