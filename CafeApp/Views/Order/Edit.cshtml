@@ -23,8 +23,8 @@
                                 <p style="z-index: 4; position: relative;" class="pricep">$ @product.Price</p>
                                 <div
                                     style="background-image: url(../images/price.svg); width: 130px; height: 100px; position: absolute;
-                                                                                                                                                top: 45px; left: -100px; rotate: 230deg; transform-origin: top; background-repeat: no-repeat; background-position: center;
-                                                                                                                                                background-size: cover;">
+                                                                                                                                                            top: 45px; left: -100px; rotate: 230deg; transform-origin: top; background-repeat: no-repeat; background-position: center;
+                                                                                                                                                            background-size: cover;">
                                 </div>
                             </div>
                         </div>
@@ -55,18 +55,18 @@
                 </div>
 
                 <div>
-                    <input class="loginInput" asp-for="Item2.TableNo" name="tableNo" required
-                        placeholder="Table Number" disabled>
+                    <input class="loginInput" asp-for="Item2.TableNo" name="tableNo" required placeholder="Table Number"
+                        readonly>
                 </div>
 
                 <div>
                     <input class="loginInput" asp-for="Item2.CustomerName" name="customerName" required
-                        placeholder="Customer Name" disabled>
+                        placeholder="Customer Name" readonly>
                 </div>
 
                 <div>
                     <input asp-for="Item2.TotalPrice" type="hidden" id="totalPrice" name="totalPrice"
-                        value="@Model.Item2.TotalPrice">
+                        value="@Model.Item2.TotalPrice" readonly>
                 </div>
 
                 <button class="orderButton" type="submit">Update Order</button>

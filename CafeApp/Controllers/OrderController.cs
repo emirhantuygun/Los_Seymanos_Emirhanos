@@ -166,12 +166,9 @@ namespace CafeApp.Controllers
             if (id == null)
                 return NotFound();
 
-            Console.WriteLine("");
-            Console.WriteLine(id);
-            Console.WriteLine("");
-
             if (ModelState.IsValid)
             {
+                Console.WriteLine("girdi");
                 try
                 {
                     _context.Update(model);
@@ -182,6 +179,9 @@ namespace CafeApp.Controllers
                     throw;
                 }
                 return RedirectToAction("MyOrder");
+            }
+            else{
+                Console.WriteLine("girdielse");
             }
 
             return View(model);
