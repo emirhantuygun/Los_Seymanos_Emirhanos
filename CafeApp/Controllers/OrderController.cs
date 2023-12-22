@@ -191,7 +191,6 @@ namespace CafeApp.Controllers
 
             if (ModelState.IsValid)
             {
-                Console.WriteLine("girdi");
                 try
                 {
                     _context.Update(model);
@@ -203,10 +202,6 @@ namespace CafeApp.Controllers
                 }
                 return RedirectToAction("MyOrder");
             }
-            else{
-                Console.WriteLine("girdielse");
-            }
-
             return View(model);
         }
 
@@ -255,7 +250,7 @@ namespace CafeApp.Controllers
 
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Success");
+            return RedirectToAction("OrderList", "Barista");
         }
 
         [HttpGet]

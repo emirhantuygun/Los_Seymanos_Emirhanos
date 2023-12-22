@@ -1,5 +1,10 @@
 @model Tuple<Order, List<Product>, List<int>, Dictionary<int, int>>
 
+@{
+  ViewData["Header"] = "Thanks For Your Order, We'll Deliver It In A Few Minutes";
+}
+
+
 
 <h2>My Order</h2>
 
@@ -52,6 +57,3 @@
     </tr>
   </tbody>
 </table>
-
-
-
