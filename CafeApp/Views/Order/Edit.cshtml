@@ -4,9 +4,7 @@
     ViewData["Header"] = "Enjoy!";
 }
 
-
 <link rel="stylesheet" href="~/css/createProduct.css">
-
 
 <div class="Wrapper">
     <div class="productsContainer">
@@ -14,18 +12,16 @@
             @{
                 foreach (var product in Model.Item1)
                 {
-                    var imageUrl = Url.Content($"~/images/product_{product.ProductId}.jpg");
-                    <div id="product" class="product" style="background-image: url('@imageUrl');"
+                    <div id="product" class="product" style="background-image: url('@(Url.Content(product.ImageSrc))');"
                         data-product-id="@product.ProductId" data-product-name="@product.Name"
                         data-product-price="@product.Price">
                         <div class="productInfo">
                             <p>@product.Name</p>
                             <div style="position: relative;">
                                 <p style="z-index: 4; position: relative;" class="pricep">$ @product.Price</p>
-                                <div
-                                    style="background-image: url(../images/price.svg); width: 130px; height: 100px; position: absolute;
-                                                                                                                                                            top: 45px; left: -100px; rotate: 230deg; transform-origin: top; background-repeat: no-repeat; background-position: center;
-                                                                                                                                                            background-size: cover;">
+                                <div style="background-image: url(../images/price.svg); width: 130px; height: 100px; position: absolute; 
+                                        top: 45px; left: -100px; rotate: 230deg; transform-origin: top; background-repeat: no-repeat; 
+                                        background-position: center; background-size: cover;">
                                 </div>
                             </div>
                         </div>
@@ -56,8 +52,8 @@
                 </div>
 
                 <div>
-                    <input class="loginInput" asp-for="Item2.TableNo" name="tableNo" required
-                        placeholder="Table Number" readonly>
+                    <input class="loginInput" asp-for="Item2.TableNo" name="tableNo" required placeholder="Table Number"
+                        readonly>
                 </div>
 
                 <div>

@@ -68,3 +68,63 @@ hr {
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
+.loginForm {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.loginInput {
+    background-color: #2e292827;
+    width: 15vw;
+    height: 5vh;
+    padding: 8px;
+    border: none;
+    font-size: 24px;
+}
+
+.loginInput:first-child {
+    margin-bottom: 15px;
+}
+
+.loginInput:focus {
+    transition: all 0.3s;
+    outline: 1px dashed #2E2928;
+}
+
+.loginInput::placeholder {
+    color: #2E2928;
+    opacity: .7;
+}
+
+.loginBtn {
+    background-color: #b80f2b;
+    color: #f8f8f8;
+    border: none;
+    width: 10vw;
+    height: 5vh;
+    transition: all 0.3s;
+    margin-top: 15px;
+    font-family: 'Raleway', sans-serif;
+    border-radius: 14px;
+    font-size: 24px;
+}
+
+.loginBtn:hover {
+    cursor: pointer;
+    opacity: .8;
+    transition: all 0.3s;
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 30px;
+    height: 36px;
+    text-align: center;
+    line-height: 36px;
+}
+
+#errorMessage {
+    transition: all 0.3s;
+}

@@ -18,6 +18,13 @@ namespace CafeApp.Controllers
 
         public IActionResult Login()
         {
+            var isAuthenticated = HttpContext.Session.GetString("IsAuth");
+
+            if (Convert.ToBoolean(isAuthenticated))
+            {
+                return RedirectToAction("OrderList");
+            }
+
             return View();
         }
 
@@ -62,9 +69,20 @@ namespace CafeApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(barista);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Login));
+                var Barista = _context.FindByEmail(barista.Email!);
+
+                if (Barista == null)
+                {
+                    _context.Add(barista);
+                    await _context.SaveChangesAsync();
+                    HttpContext.Session.SetString("IsAuth", "false");
+                    return RedirectToAction(nameof(Login));
+
+                }
+                else
+                {
+                    TempData["Error Message"] = "Barista is already added";
+                }
             }
             return View(barista);
         }

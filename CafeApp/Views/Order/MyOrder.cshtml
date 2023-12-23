@@ -4,56 +4,86 @@
   ViewData["Header"] = "Thanks For Your Order, We'll Deliver It In A Few Minutes";
 }
 
+<div style="display: flex; width: 65%; justify-content: space-between; margin: 0 auto; font-size: 24px;">
+  <div style="text-align: center;">
+    <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Customer Name</div>
 
+    <div style="margin-bottom: 30px;">
+      @Model.Item1.CustomerName
+    </div>
 
-<h2>My Order</h2>
+  </div>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Customer Name</th>
-      <th>Table Number</th>
-      <th>Order Time</th>
-      <th>Products</th>
-      <th>Total Price</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>@Model.Item1.CustomerName</td>
-      <td>@Model.Item1.TableNo</td>
-      <td>
-        @{
-          int hours = Model.Item1.OrderDate.Hour;
-          int minutes = Model.Item1.OrderDate.Minute;
+  <div style="text-align: center;">
+    <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Table Number</div>
 
-          string formattedHours = hours < 10 ? "0" + hours.ToString() : hours.ToString();
-          string formattedMinutes = minutes < 10 ? "0" + minutes.ToString() : minutes.ToString();
+    <div style="margin-bottom: 30px;">
+      @Model.Item1.TableNo
+    </div>
 
-          string currentTimeString = formattedHours + ":" + formattedMinutes;
+  </div>
+
+  <div style="text-align: center;">
+    <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Order Time</div>
+
+    <div style="margin-bottom: 30px;">
+      @{
+        int hours = Model.Item1.OrderDate.Hour;
+        int minutes = Model.Item1.OrderDate.Minute;
+
+        string formattedHours = hours < 10 ? "0" + hours.ToString() : hours.ToString();
+        string formattedMinutes = minutes < 10 ? "0" + minutes.ToString() : minutes.ToString();
+
+        string currentTimeString = formattedHours + ":" + formattedMinutes;
+      }
+      @currentTimeString
+    </div>
+
+  </div>
+
+  <div style="text-align: center;">
+    <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Products</div>
+
+    <div style="margin-bottom: 30px; display: flex; flex-direction: column;">
+      @{
+        foreach (var product in Model.Item2)
+        {
+          <span>@product.Name @Model.Item4[product.ProductId]x &nbsp;&nbsp;
+            ($@(product.Price * Model.Item4[product.ProductId]))</span>
         }
-        @currentTimeString
-      </td>
-      <td>
-        @{
-          foreach (var product in Model.Item2)
-          {
-            <span>@product.Name @Model.Item4[product.ProductId]x &nbsp;&nbsp;
-              $@(product.Price * Model.Item4[product.ProductId])</span>
+      }
+    </div>
+  </div>
 
-            <br>
-          }
-        }
-      </td>
-      <td>
-        <span>$@Model.Item1.TotalPrice</span>
-      </td>
-      <td>
-        <a asp-controller="Order" asp-action="Edit" asp-route-id="@Model.Item1.OrderId"
-          class="btn btn-primary btn-sm">Edit</a>
-        <a asp-controller="Order" asp-action="Delete" asp-route-id="@Model.Item1.OrderId"
-          class="btn btn-danger btn-sm">Delete</a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+  <div style="text-align: center;">
+    <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Total Price</div>
+
+    <div style="margin-bottom: 30px;">
+      $@Model.Item1.TotalPrice
+    </div>
+  </div>
+
+  <div style="text-align: center;">
+    <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid; opacity: 0;">Update Order</div>
+
+    <div style="margin-bottom: 30px;">
+      <a asp-controller="Order" asp-action="Edit" asp-route-id="@Model.Item1.OrderId" style="text-decoration: none;
+                        color: #F8F8F8;
+                        background-color: #2E2928;
+                        font-family: 'Raleway', sans-serif;
+                        padding: 10px 32px;
+                        border-radius: 14px; margin-right: 15px;
+                        transition: all 0.3s;" onmouseover="this.style.opacity=0.8"
+        onmouseout="this.style.opacity=1">Edit</a>
+      <a asp-controller="Order" asp-action="Delete" asp-route-id="@Model.Item1.OrderId" style="text-decoration: none;
+                        color: #F8F8F8;
+                        background-color: #b80f2b;
+                        font-family: 'Raleway', sans-serif;
+                        padding: 10px 13px;
+                        border-radius: 14px;
+                        transition: all 0.3s;" onmouseover="this.style.opacity=0.8"
+        onmouseout="this.style.opacity=1">Delete</a>
+    </div>
+  </div>
+</div>
+<div style="height: 15vh;"></div>

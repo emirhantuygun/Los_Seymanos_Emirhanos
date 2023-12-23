@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Raleway:ital@0;1&display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body id="body">
     <header>
         <nav style="display: flex; align-items: center; justify-content: space-between;">
             <div style="display: flex; justify-content: space-between; align-items: center; width: 82%;">
@@ -59,3 +59,21 @@
 </body>
 
 </html>
+
+<script>
+    @if (ViewData["Title"]?.ToString() == "Add Barista")
+    {
+        @:var body = document.getElementById("body");
+        @:var image = document.createElement("img");
+        @:image.src = "../images/logo.png";
+        @:image.style.position = "absolute";
+        @:image.style.top = "50%";
+        @:image.style.left = "83%";
+        @:image.style.opacity = "0.1";
+        @:image.style.transform = "translate(-130%, -80%)";
+        @:image.style.zIndex = "-1";
+
+        @:body.appendChild(image);
+
+    }
+</script>

@@ -1,26 +1,42 @@
 @model WebProject.Models.Barista
+
 @{
-    ViewData["Title"] = "Sign Up";
+    ViewData["Header"] = "Add Barista";
+    ViewData["Title"] = "Add Barista";
 }
 <link rel="stylesheet" href="~/css/signup.css">
 
 <div class="signup-container">
-    <h2 class="signup-title">Sign Up</h2>
-    <hr>
     <div class="wrapper">
-        <form asp-action="Signup" method="post" class="signup-form">
+
+        <div class="error-message">
+            <div id="errorMessage">@TempData["Error Message"]</div>
+        </div>
+
+        <form asp-action="Signup" method="post" class="loginForm">
             <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
             <div class="form-group">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" />
+                <input class="loginInput" asp-for="Email" placeholder="Email" required/>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Password"></label>
-                <input asp-for="Password" type="password" class="form-control" />
+                <input class="loginInput" asp-for="Password" type="password" placeholder="Password" required/>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Sign Up</button>
+            <button type="submit" class="loginBtn">Add</button>
         </form>
     </div>
 </div>
+<div style="height: 15vh;"></div>
+
+<script>
+    setTimeout(function () {
+        var errorMessage = document.getElementById("errorMessage");
+
+        if (errorMessage) {
+            setTimeout(function () {
+                errorMessage.style.opacity = '0';
+            }, 1000);
+        }
+    }, 5000);
+</script>
