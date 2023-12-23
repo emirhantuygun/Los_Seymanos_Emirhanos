@@ -255,6 +255,7 @@ namespace CafeApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete([FromForm] int orderId)
         {
+
             List<OrderProduct> orderProducts = await _context.OrderProducts
             .Where(op => op.OrderId == orderId)
             .ToListAsync();

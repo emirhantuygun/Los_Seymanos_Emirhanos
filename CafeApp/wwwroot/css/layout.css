@@ -8,10 +8,10 @@ body {
   font-family: 'Lato', sans-serif;
   color: #2E2928;
   font-size: 16px;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  height: 100vh;
 }
 
 h1{
@@ -25,7 +25,6 @@ header {
   margin-top: 30px;
   background-color: #f8f8f8;
   padding: 0px 45px;
-  margin-bottom: 30px;
   width: 85%;
 }
 
@@ -45,13 +44,12 @@ header nav div h1 {
 }
 
 footer{
-  margin-top: 30px;
   text-align: center;
   width: 100%;
   padding: 15px 0;
   background-color: #2E2928;
   color: #ffffff;
-  font-size: 12px;
+  font-size: 13px;
 
 }
 

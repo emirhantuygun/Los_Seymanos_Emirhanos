@@ -1,6 +1,6 @@
 .productsContainer {
     width: 70%;
-    height: 74vh;
+    height: 78vh;
     overflow: auto;
     padding-right: 30px;
     padding-left: 20px;
@@ -142,7 +142,7 @@
     background-color: #2e292827;
     width: 15vw;
     height: 5vh;
-    font-size: 14px;
+    font-size: 18px;
     padding: 8px;
     border: transparent;
     border-radius: 10px;
@@ -172,6 +172,7 @@
     margin-top: 15px;
     font-family: 'Raleway', sans-serif;
     border-radius: 14px;
+    font-size: 18px;
 }
 
 .orderButton:hover{

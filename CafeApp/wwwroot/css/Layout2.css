@@ -103,9 +103,9 @@ h2 {
     background-color: #2e292827;
     width: 15vw;
     height: 5vh;
-    font-size: 14px;
     padding: 8px;
     border: none;
+    font-size: 24px;
 }
 
 .loginInput:first-child {
@@ -136,6 +136,7 @@ h2 {
     margin-top: 15px;
     font-family: 'Raleway', sans-serif;
     border-radius: 14px;
+    font-size: 24px;
 }
 
 .loginBtn:hover {

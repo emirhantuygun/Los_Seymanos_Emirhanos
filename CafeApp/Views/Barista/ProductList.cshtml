@@ -1,38 +1,55 @@
 @model IEnumerable<CafeApp.Models.Product>
 
 @{
-    ViewData["Title"] = "Product List";
+    ViewData["Header"] = "Product List";
 }
 
-<h2>Product List</h2>
-<hr>
-<table class="table table-bordered">
-    <thead>
-        <tr>
+
+
+
+<table style="margin: 0 auto; margin-top: 45px; font-size: 24px;
+display: flex; flex-direction: column; justify-content: space-between;
+width: 60%;">
+    <thead style="display: block; margin-bottom: 30px; width: 96.5%;">
+        <tr style="display: flex; justify-content: space-between;">
             <th>Image</th>
             <th>Name</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-    @foreach (var product in Model)
-    {
-        var imageUrl = @Url.Content(product.ImageSrc);
+        @foreach (var product in Model)
+        {
+            <tr style="display: flex; justify-content: space-between;">
+                <td style="width: 7%; height: 7%; margin-bottom: 30 px;">
+                    <img src="@(Url.Content(product.ImageSrc))" alt="@product.Name" style="width: 100%; height: 100%;">
+                </td>
+                <td>@product.Name</td>
+                <td>
 
-        <tr>
-            <td>
-                <img src="@imageUrl" alt="@product.Name" style="width: 100px; height: auto;">
-            </td>
-            <td>@product.Name</td>
-            <td>
-                
-                <a asp-action="Edit" asp-controller="Product" asp-route-id="@product.ProductId" class="btn btn-primary">Edit</a>
+                    <a asp-controller="Product" asp-action="Edit" asp-route-id="@product.ProductId" style="text-decoration: none;
+                        color: #F8F8F8;
+                        background-color: #2E2928;
+                        font-family: 'Raleway', sans-serif;
+                        padding: 10px 28px;
+                        border-radius: 14px;
+                        transition: all 0.3s;" onmouseover="this.style.opacity=0.8"
+                        onmouseout="this.style.opacity=1">Edit</a>
 
-                <a asp-action="Delete" asp-controller="Product" asp-route-id="@product.ProductId" class="btn btn-danger">Delete</a>
-            </td>
-        </tr>
-    }
+                    <a asp-controller="Product" asp-action="Delete" asp-route-id="@product.ProductId" style="text-decoration: none;
+                        color: #F8F8F8;
+                        background-color: #b80f2b;
+                        font-family: 'Raleway', sans-serif;
+                        padding: 10px 13px;
+                        border-radius: 14px;
+                        transition: all 0.3s;" onmouseover="this.style.opacity=0.8"
+                        onmouseout="this.style.opacity=1">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
-<a asp-action="Create" asp-controller="Product" class="btn btn-success">Add New Product</a>
+<a asp-action="Create" asp-controller="Product" style="margin: 0 auto; text-align: center; text-decoration: none; font-size: 18px; margin-top: 45px; margin-bottom: 60px; display: block;
+color: #f8f8f8; background-color: rgba(45,41,40,0.5); width: 15%; padding: 10px; border-radius: 14px;
+transition: all 0.3s;" onmouseenter="this.style.opacity=0.9" onmouseout="this.style.opacity=1">Add New Product</a>

@@ -1,54 +1,59 @@
 @model Tuple<Order, List<Product>, List<int>, Dictionary<int, int>>
 
-
-<h2>Order Details</h2>
-<hr>
-
-<form asp-controller="Order" asp-action="UpdateOrderStatus" method="post">
+@{
+    ViewData["Header"] = "Order Details";
+}
 
 
-    <div>
+<form style="display: flex; flex-direction: column;
+font-size: 24px;" asp-controller="Order" asp-action="UpdateOrderStatus" method="post">
+
     <input asp-for="Item1.OrderId" type="hidden" name="orderId" value="@Model.Item1.OrderId">
+
+    <div style="display: flex; width: 70%; justify-content: space-between; margin: 0 auto;">
+        <div style="text-align: center;">
+            <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Table No</div>
+            <div>@Model.Item1.TableNo</div>
+        </div>
+
+        <div style="text-align: center;">
+            <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Customer Name</div>
+            <div>@Model.Item1.CustomerName</div>
+        </div>
+
+        <div style="text-align: center;">
+            <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Order Date</div>
+            <div>@Model.Item1.OrderDate.ToString("hh:mm tt")</div>
+        </div>
+
+        <div style="text-align: center;">
+            <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Selected Products</div>
+            <ul>
+                @foreach (var product in Model.Item2)
+                {
+                    <li>
+                        @product.Name (@Model.Item4[product.ProductId] x)
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <div style="text-align: center;">
+            <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Is Served</div>
+            <input style="width: 30px; height: 30px; cursor: pointer;" type="checkbox" name="IsServed" value="true"
+            @(Model.Item1.IsServed ? "checked='checked'" : "") />
+        </div>
+
+        <div style="text-align: center;">
+            <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Is Paid</div>
+            <input style="width: 30px; height: 30px; cursor: pointer;" type="checkbox" name="IsPaid" value="true"
+            @(Model.Item1.IsPaid ? "checked='checked'" : "") />
+        </div>
+
     </div>
-    <div class="form-group">
-        <label>Table No:</label>
-        <p>@Model.Item1.TableNo</p>
-    </div>
 
-    <div class="form-group">
-        <label>Customer Name:</label>
-        <p>@Model.Item1.CustomerName</p>
-    </div>
-
-    <div class="form-group">
-        <label>Order Date:</label>
-       <p>@Model.Item1.OrderDate.ToString("hh:mm tt")</p>
-    </div>
-
-    <div class="form-group">
-        <label>Selected Products:</label>
-        <ul>
-            @foreach (var product in Model.Item2)
-            {
-                <li>
-                    @product.Name (@Model.Item4[product.ProductId] x)
-                </li>
-            }
-        </ul>
-    </div>
-
-    <div class="form-group">
-        <label>Is Served:</label>
-        <input type="checkbox" name="IsServed" value="true" @(Model.Item1.IsServed ? "checked='checked'" : "") />
-
-    </div>
-
-    <div class="form-group">
-        <label>Is Paid:</label>
-        <input type="checkbox" name="IsPaid" value="true" @(Model.Item1.IsPaid ? "checked='checked'" : "") />
-    </div>
-
-    <button type="submit" >Update Order Status</button>
-</form>         
-
-
+    <button style="width: 10%; margin: 0 auto; margin-top: 45px; border-radius: 14px; border: none; background-color: #b80f2b;
+    color: #f8f8f8; padding: 9px; transition: all 0.3s;" type="submit" onmouseenter="this.style.opacity=0.8"
+        onmouseleave="this.style.opacity=1">Update</button>
+</form>
+<div style="height: 15vh;"></div>

@@ -4,42 +4,67 @@
     ViewData["Header"] = "OrderList";
 }
 
-<table class="table table-borderless tex" style="margin: 0 auto; width: auto; ">
-    <thead>
-        <tr class="border-bottom border-dark">
-            <th class="border-end border-dark">Table No</th>
-            <th class="border-end border-dark">Customer Name</th>
-            <th class="border-end border-dark">Service Status</th>
-            <th>Payment Status</th>
-        </tr>
-    </thead>
-    <tbody class="mt-4 ">
+<div style="display: flex; width: 55%; justify-content: space-between; margin: 0 auto; font-size: 24px;">
+    <div style="text-align: center;">
+        <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Table No</div>
+
         @foreach (var order in Model)
         {
-            <tr>
-                <td class="border-end border-dark pt-4 " scope="row">@order.TableNo</td>
-                <td class="border-end border-dark pt-4">@order.CustomerName</td>
-                <td class="border-end border-dark pt-4">@order.IsServed</td>
-                <td class="pt-4">@order.IsPaid</td>
-                <td class=" pt-4">
-                    <a asp-controller="Barista" asp-action="OrderDetails" asp-route-id="@order.OrderId" style="text-decoration: none;
+            <div>
+                @order.TableNo
+            </div>
+        }
+    </div>
+
+    <div style="text-align: center;">
+        <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Customer Name</div>
+        @foreach (var order in Model)
+        {
+            <div>
+                @order.CustomerName
+            </div>
+        }
+    </div>
+
+    <div style="text-align: center;">
+        <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Service Status</div>
+        @foreach (var order in Model)
+        {
+            <input style="width: 30px; height: 30px; cursor: pointer;" type="checkbox" name="IsServed" value="true"
+            @(order.IsServed ? "checked='checked'" : "") disabled />
+        }
+    </div>
+
+    <div style="text-align: center;">
+        <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Payment Status</div>
+        @foreach (var order in Model)
+        {
+            <input style="width: 30px; height: 30px; cursor: pointer;" type="checkbox" name="IsServed" value="true"
+            @(order.IsPaid ? "checked='checked'" : "") disabled />
+        }
+    </div>
+
+    <div style="text-align: center;">
+        <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid; opacity: 0;">Update Order</div>
+        @foreach (var order in Model)
+        {
+            <a asp-controller="Barista" asp-action="OrderDetails" asp-route-id="@order.OrderId" style="text-decoration: none;
                         color: #F8F8F8;
                         background-color: #2E2928;
                         font-family: 'Raleway', sans-serif;
                         padding: 10px 13px;
                         border-radius: 14px; margin-right: 15px;
                         transition: all 0.3s;" onmouseover="this.style.opacity=0.8"
-                        onmouseout="this.style.opacity=1">Details</a>
-                    <a asp-controller="Barista" asp-action="Delete" asp-route-id="@order.OrderId" style="text-decoration: none;
+                onmouseout="this.style.opacity=1">Details</a>
+            <a asp-controller="Barista" asp-action="Delete" asp-route-id="@order.OrderId" style="text-decoration: none;
                         color: #F8F8F8;
                         background-color: #b80f2b;
                         font-family: 'Raleway', sans-serif;
                         padding: 10px 13px;
                         border-radius: 14px;
                         transition: all 0.3s;" onmouseover="this.style.opacity=0.8"
-                        onmouseout="this.style.opacity=1">Delete</a>
-                </td>
-            </tr>
+                onmouseout="this.style.opacity=1">Delete</a>
         }
-    </tbody>
-</table>
+    </div>
+</div>
+<div style="height: 15vh;"></div>
