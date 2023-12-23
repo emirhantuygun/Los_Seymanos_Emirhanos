@@ -17,7 +17,7 @@
     <tbody>
     @foreach (var product in Model)
     {
-        var imageUrl = $"../images/product_{product.ProductId}.jpg";
+        var imageUrl = @Url.Content(product.ImageSrc);
 
         <tr>
             <td>
