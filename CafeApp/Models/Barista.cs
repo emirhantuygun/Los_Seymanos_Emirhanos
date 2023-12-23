@@ -16,5 +16,11 @@ namespace WebProject.Models
 
         [Required]
         public string? Password { get; set; }
+
+        public bool IsAuthenticated { get; set; }
+
+        public Barista(){
+            IsAuthenticated = false;
+        }
     }
 }

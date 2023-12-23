@@ -13,9 +13,9 @@
         <div id="errorMessage">@TempData["Error Message"]</div>
     </div>
 
-    <form metzhod="post" class="loginForm" asp-controller="Barista" asp-action="Login">
-        <input class="loginInput email" type="email" placeholder="Email address" asp-for="Email">
-        <input class="loginInput password" type="password" placeholder="Password" asp-for="Password">
+    <form method="post" class="loginForm" asp-controller="Barista" asp-action="Login">
+        <input class="loginInput email" type="email" placeholder="Email address" asp-for="Email" required>
+        <input class="loginInput password" type="password" placeholder="Password" asp-for="Password" required>
         <button class="loginBtn" type="submit">Login</button>
     </form>
 </div>

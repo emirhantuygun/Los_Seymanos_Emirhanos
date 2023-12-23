@@ -1,4 +1,5 @@
 using CafeApp.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using WebProject.Data;
 
@@ -10,28 +11,33 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHostedService<DatabaseInitializer>();
 
 builder.Services.AddDbContext<DataContext>(
-    Options=>{
-        var config=builder.Configuration;
-        var conString=config.GetConnectionString("database");
+    Options =>
+    {
+        var config = builder.Configuration;
+        var conString = config.GetConnectionString("database");
         Options.UseSqlite(conString);
-        });
+    });
+
+builder.Services.AddSession();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+}
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
-app.UseAuthorization();
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

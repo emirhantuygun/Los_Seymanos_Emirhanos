@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using WebProject.Models;
 namespace CafeApp.Controllers
 {
-
     public class BaristaController : Controller
     {
         private readonly DataContext _context;
@@ -31,15 +30,15 @@ namespace CafeApp.Controllers
 
                 if (barista != null && barista.Password == model.Password)
                 {
+                    barista.IsAuthenticated = true;
+                    HttpContext.Session.SetString("IsAuth", barista.IsAuthenticated.ToString());
                     return RedirectToAction("OrderList");
                 }
-                else{
-
+                else
+                {
                     TempData["Error Message"] = "Invalid email or password!";
                 }
-
             }
-
             return View();
         }
 
@@ -47,6 +46,13 @@ namespace CafeApp.Controllers
 
         public IActionResult Signup()
         {
+            var isAuthenticated = HttpContext.Session.GetString("IsAuth");
+
+            if (!Convert.ToBoolean(isAuthenticated))
+            {
+                return RedirectToAction("Login");
+            }
+
             return View();
         }
 
@@ -58,25 +64,37 @@ namespace CafeApp.Controllers
             {
                 _context.Add(barista);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Login)); 
+                return RedirectToAction(nameof(Login));
             }
             return View(barista);
         }
-
 
         //SHOW ORDERS
         [HttpGet]
         public async Task<IActionResult> OrderList()
         {
+            var isAuthenticated = HttpContext.Session.GetString("IsAuth");
+
+            if (!Convert.ToBoolean(isAuthenticated))
+            {
+                return RedirectToAction("Login");
+            }
+
             var orders = await _context.Orders.ToListAsync();
             return View(orders);
         }
 
-
         [HttpGet]
         public async Task<IActionResult> OrderDetails(int? id)
         {
-             var order = await _context.Orders.FindAsync(id);
+            var isAuthenticated = HttpContext.Session.GetString("IsAuth");
+
+            if (!Convert.ToBoolean(isAuthenticated))
+            {
+                return RedirectToAction("Login");
+            }
+
+            var order = await _context.Orders.FindAsync(id);
 
             List<OrderProduct> orderProducts = _context.OrderProducts
             .Where(op => op.OrderId == id)
@@ -94,15 +112,20 @@ namespace CafeApp.Controllers
             var tuple = Tuple.Create(order, products, productIds, productIdQuantityPairs);
             return View(tuple);
         }
-        
-         // GET: Barista/ProductList
-         [HttpGet]
+
+        // GET: Barista/ProductList
+        [HttpGet]
         public async Task<IActionResult> ProductList()
         {
+            var isAuthenticated = HttpContext.Session.GetString("IsAuth");
+
+            if (!Convert.ToBoolean(isAuthenticated))
+            {
+                return RedirectToAction("Login");
+            }
+
             var products = await _context.Products.ToListAsync();
             return View(products);
         }
-       
-
     }
 }
