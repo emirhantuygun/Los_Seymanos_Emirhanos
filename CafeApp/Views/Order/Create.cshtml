@@ -13,8 +13,7 @@
             @{
                 foreach (var product in Model.Item1)
                 {
-                    var imageUrl = Url.Content($"~/images/product_{product.ProductId}.jpg");
-                    <div id="product" class="product" style="background-image: url('@imageUrl');">
+                    <div id="product" class="product" style="background-image: url('@(Url.Content(product.ImageSrc))');">
                         <div class="productInfo">
                             <p>@product.Name</p>
                             <div style="position: relative;">
