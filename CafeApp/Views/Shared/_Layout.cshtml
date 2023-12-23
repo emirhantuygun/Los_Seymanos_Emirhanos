@@ -20,8 +20,8 @@
             <div style="display: flex; justify-content: space-between; align-items: center; width: 82%;">
                 @{
                     string currentPath = ViewContext.HttpContext.Request.Path;
-                    string controller = currentPath.Contains("Barista") ? "Barista" : "Order";
-                    string action = currentPath.Contains("Barista") ? "OrderList" : "Create";
+                    string controller = currentPath.Contains("Barista") ? "Barista" : "Home";
+                    string action = currentPath.Contains("Barista") ? "OrderList" : "Index";
                 }
                 <a asp-controller="@controller" asp-action="@action"><img src="/images/logo.png" alt="Logo"
                         width="100px" height="100px" class="logo"></a>

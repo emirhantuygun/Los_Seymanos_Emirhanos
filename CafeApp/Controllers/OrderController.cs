@@ -28,18 +28,18 @@ namespace CafeApp.Controllers
 
             if (order != null)
                 _context.Orders.Remove(order);
-            
+
 
             await _context.SaveChangesAsync();
 
-            return Json(new { success = true});
+            return Json(new { success = true });
         }
 
         [HttpPost]
         public async Task<IActionResult> AddToBag(int productId, int orderId)
         {
 
-            var existingOrderProduct =  _context.OrderProducts.FirstOrDefault(op => op.OrderId == orderId && op.ProductId == productId);
+            var existingOrderProduct = await _context.OrderProducts.FirstOrDefaultAsync(op => op.OrderId == orderId && op.ProductId == productId);
 
             if (existingOrderProduct != null)
             {
@@ -54,15 +54,15 @@ namespace CafeApp.Controllers
                     Quantity = 1
                 };
 
-                _context.OrderProducts.Add(newOrderProduct);
+                await _context.OrderProducts.AddAsync(newOrderProduct);
             }
 
             await _context.SaveChangesAsync();
 
-            var updatedQuantity = _context.OrderProducts
+            var updatedQuantity = await _context.OrderProducts
                 .Where(op => op.OrderId == orderId && op.ProductId == productId)
                 .Select(op => op.Quantity)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             return Json(new { success = true, quantity = updatedQuantity });
         }
@@ -127,7 +127,24 @@ namespace CafeApp.Controllers
                 }
                 else
                 {
-                    return Json(new { success = false, str="hata 2" });
+                    return Json(new { success = false });
+                }
+
+                await _context.SaveChangesAsync();
+
+                var existingOrderList = await _context.Orders.Where(o => o.TableNo == null).ToListAsync();
+
+                if (existingOrderList != null)
+                {
+
+                    var orderIds = existingOrderList.Select(op => op.OrderId).ToList();
+
+                    var orderProductWiththeOrderIdList = await _context.OrderProducts
+                    .Where(op => orderIds.Contains(op.OrderId))
+                    .ToListAsync();
+
+                    _context.OrderProducts.RemoveRange(orderProductWiththeOrderIdList);
+                    _context.Orders.RemoveRange(existingOrderList);
                 }
 
                 await _context.SaveChangesAsync();
@@ -135,7 +152,7 @@ namespace CafeApp.Controllers
             }
             else
             {
-                return Json(new { success = false, str="hata 1" });
+                return Json(new { success = false });
             }
 
         }
