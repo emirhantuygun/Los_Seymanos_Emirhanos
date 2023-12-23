@@ -1,0 +1,12 @@
+@model CafeApp.Models.Order
+
+
+<p>
+   Do you want to delete the @Model.CustomerName's order?
+</p>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" name="orderId" asp-for="@Model.OrderId">
+    <button type="submit" class="btn btn-danger">Yes</button>
+    <a href="/Order/MyOrder?id=@Model.OrderId"><button type="button" class="btn btn-primary">No</button></a>
+</form>

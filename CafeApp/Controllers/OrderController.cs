@@ -255,7 +255,6 @@ namespace CafeApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete([FromForm] int orderId)
         {
-
             List<OrderProduct> orderProducts = await _context.OrderProducts
             .Where(op => op.OrderId == orderId)
             .ToListAsync();
@@ -267,7 +266,7 @@ namespace CafeApp.Controllers
 
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("OrderList", "Barista");
+            return RedirectToAction("Success", "Order");
         }
 
         [HttpGet]

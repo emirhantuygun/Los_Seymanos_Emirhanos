@@ -127,5 +127,29 @@ namespace CafeApp.Controllers
             var products = await _context.Products.ToListAsync();
             return View(products);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            var order = await _context.Orders.FindAsync(id);
+            return View(order);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete([FromForm] int orderId)
+        {
+            List<OrderProduct> orderProducts = await _context.OrderProducts
+            .Where(op => op.OrderId == orderId)
+            .ToListAsync();
+            _context.OrderProducts.RemoveRange(orderProducts);
+
+            var order = await _context.Orders.FindAsync(orderId);
+            if (order != null)
+                _context.Orders.Remove(order);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("OrderList", "Barista");
+        }
     }
 }

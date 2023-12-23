@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using CafeApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CafeApp.Models

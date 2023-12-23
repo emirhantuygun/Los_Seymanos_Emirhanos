@@ -2,14 +2,13 @@ using CafeApp.Data;
 using CafeApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebProject.Models;
 
 namespace CafeApp.Controllers
 {
     public class ProductController : Controller
     {
         private readonly DataContext _context;
-        public ProductController (DataContext context)
+        public ProductController(DataContext context)
         {
             _context = context;
         }
@@ -21,7 +20,7 @@ namespace CafeApp.Controllers
             return View();
         }
 
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("Product/Create")]
@@ -30,15 +29,15 @@ namespace CafeApp.Controllers
             if (ModelState.IsValid)
             {
                 _context.Products.Add(product);
-                await _context.SaveChangesAsync(); 
-                return RedirectToAction("ProductList","Barista"); 
+                await _context.SaveChangesAsync();
+                return RedirectToAction("ProductList", "Barista");
             }
 
             return View(product);
         }
 
 
-       [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -55,7 +54,7 @@ namespace CafeApp.Controllers
             return View(product);
         }
 
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ProductId,Name,ImageSrc,Details,Price")] Product product)
@@ -83,7 +82,7 @@ namespace CafeApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("ProductList","Barista");
+                return RedirectToAction("ProductList", "Barista");
             }
             return View(product);
         }
@@ -92,8 +91,8 @@ namespace CafeApp.Controllers
         {
             return _context.Products.Any(e => e.ProductId == id);
         }
-        
-       // GET: Product/Delete/5
+
+        // GET: Product/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -122,7 +121,7 @@ namespace CafeApp.Controllers
                 _context.Products.Remove(product);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction("ProductList","Barista");
+            return RedirectToAction("ProductList", "Barista");
         }
     }
 }
