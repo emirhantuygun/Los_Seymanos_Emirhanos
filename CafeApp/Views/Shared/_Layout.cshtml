@@ -20,13 +20,16 @@
             <div style="display: flex; justify-content: space-between; align-items: center; width: 82%;">
                 @{
                     string currentPath = ViewContext.HttpContext.Request.Path;
-                    string controller = currentPath.Contains("Barista") ? "Barista" : "Home";
-                    string action = currentPath.Contains("Barista") ? "OrderList" : "Index";
+                    string controller = currentPath.Contains("Barista") || currentPath.Contains("Product") ? "Barista" :
+                    "Home";
+                    string action = currentPath.Contains("Barista") || currentPath.Contains("Product") ? "OrderList" :
+                    "Index";
                 }
                 <a asp-controller="@controller" asp-action="@action"><img src="/images/logo.png" alt="Logo"
                         width="100px" height="100px" class="logo"></a>
 
-                <h2 style="font-family:'Raleway',sans-serif; font-size: 48px; margin-left: 150px;">@ViewData["Header"]</h2>
+                <h2 style="font-family:'Raleway',sans-serif; font-size: 48px; margin-left: 150px;">@ViewData["Header"]
+                </h2>
                 <div></div>
             </div>
             <div>
