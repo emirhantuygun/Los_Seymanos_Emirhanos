@@ -68,29 +68,7 @@
         </div>
         <br>
         <br>
-        <div style="background-image: url('@Url.Content("~/images/OrderNote.svg")'); background-position: center; 
-            background-repeat: no-repeat; background-size: cover; width: 350px; height: 470px;
-            padding-top: 75px; padding-left: 45px; padding-bottom: 100px; position: relative;
-            margin-left: 35px;" id="OrderDetails">
-
-            <div class="tableContainer" style="height: 100%; overflow: auto; width: 78%; padding-right: 15px;">
-                <table style=" position: relative; width: 100%; display: flex; flex-direction: column;
-                        justify-content: space-between;" id="tbl">
-                    <tr style="display: flex; justify-content: space-between; align-items: center; 
-                    border-bottom: 1px solid #b80f2b; margin-bottom: 15px;">
-                        <td style="font-family: 'Raleway', sans-serif;">Name</td>
-                        <td style="font-family: 'Raleway', sans-serif;">Quantity</td>
-                        <td style="font-family: 'Raleway', sans-serif;">Price</td>
-                    </tr>
-                </table>
-            </div>
-
-            <div style="position: absolute;
-                    bottom: 15%; left: 30%; font-family: 'Raleway', sans-serif;">Total:</div>
-            <div style="position: absolute;
-                    bottom: 15%; left: 50%;" id="total">$ 0</div>
-
-        </div>
+        @await Html.PartialAsync("../Shared/_OrderDetails")
     </div>
 </div>
 
