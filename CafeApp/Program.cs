@@ -36,8 +36,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseRouting();
 app.UseSession();
+app.UseRouting();
 
 app.MapControllerRoute(
     name: "default",

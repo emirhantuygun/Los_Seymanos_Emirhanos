@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"] - LOS SEYMANOS EMIRHANOS</title>
+    <title>@ViewBag.Title - LOS SEYMANOS EMIRHANOS</title>
     <link rel="icon" href="~/images/title_bar_icon.png" type="image/png">
     <link rel="stylesheet" href="~/css/Layout2.css" asp-append-version="true">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +21,7 @@
 </html>
 
 <script>
-    @if (ViewData["Title"]?.ToString() == "Login")
+    @if (ViewBag.Title?.ToString() == "Login")
     {
         @:var body = document.getElementById("body");
         @:var image = document.createElement("img");
