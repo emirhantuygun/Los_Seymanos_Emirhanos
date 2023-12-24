@@ -1,35 +1,74 @@
 @model CafeApp.Models.Product
 
 @{
-    ViewBag.Title = "Create Product";
+    ViewData["Title"] = "Create Product";
+    ViewData["Header"] = "Create New Product";
 }
 
-<h2>Create New Product</h2>
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
+    <div style="width: 22%; font-size: 24px; display: flex; flex-direction: column; margin: 0 auto;">
     @Html.AntiForgeryToken()
-    
-    <div class="form-group">
-        @Html.LabelFor(model => model.Name)
-        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+
+    <div style="display: flex; align-items: center; margin-bottom: 30px; justify-content: space-between;">
+        <label style="margin-right: 45px; font-weight: bold;" asp-for="@Model.Name">Name:</label>
+        <input style="
+        background-color: #2e292827;
+        width: 13vw;
+        height: 5vh;
+        padding: 8px;
+        border: transparent;
+        border-radius: 10px;
+        transition: all 0.3s;" onfocus="this.style.transition='all 0.3s'; this.style.outline='1px dashed #2E2928';"
+            onblur="this.style.transition=''; this.style.outline='';" type="text" asp-for="@Model.Name">
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.ImageSrc)
-        @Html.TextBoxFor(model => model.ImageSrc, new { @class = "form-control" })
+    <div style="display: flex; align-items: center; margin-bottom: 30px;  justify-content: space-between;">
+        <label style="margin-right: 45px; font-weight: bold;" asp-for="@Model.ImageSrc">Image Source:</label>
+        <input style="
+        background-color: #2e292827;
+        width: 13vw;
+        height: 5vh;
+        padding: 8px;
+        border: transparent;
+        border-radius: 10px;
+        transition: all 0.3s;" onfocus="this.style.transition='all 0.3s'; this.style.outline='1px dashed #2E2928';"
+            onblur="this.style.transition=''; this.style.outline='';" type="text" asp-for="@Model.ImageSrc">
+
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Details)
-        @Html.TextBoxFor(model => model.Details, new { @class = "form-control" })
+    <div style="display: flex; align-items: center; margin-bottom: 30px;  justify-content: space-between;">
+        <label style="margin-right: 45px; font-weight: bold;" asp-for="@Model.Details">Details:</label>
+        <input style="
+        background-color: #2e292827;
+        width: 13vw;
+        height: 5vh;
+        padding: 8px;
+        border: transparent;
+        border-radius: 10px;
+        transition: all 0.3s;" onfocus="this.style.transition='all 0.3s'; this.style.outline='1px dashed #2E2928';"
+            onblur="this.style.transition=''; this.style.outline='';" type="text" asp-for="@Model.Details">
+
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Price, "Price")
-        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" }})
+
+    <div style="display: flex; align-items: center; margin-bottom: 30px;  justify-content: space-between;">
+        <label style="margin-right: 45px; font-weight: bold;" asp-for="@Model.Price">Price:</label>
+        <input style="
+        background-color: #2e292827;
+        width: 13vw;
+        height: 5vh;
+        padding: 8px;
+        border: transparent;
+        border-radius: 10px;
+        transition: all 0.3s;" onfocus="this.style.transition='all 0.3s'; this.style.outline='1px dashed #2E2928';"
+            onblur="this.style.transition=''; this.style.outline='';" type="text" asp-for="@Model.Price">
+
     </div>
 
-    <input type="submit" value="Create" class="btn btn-danger" />
+    <button style="width: 50%; margin: 0 auto; margin-top: 45px; border-radius: 14px; border: none; background-color: #b80f2b;
+    color: #f8f8f8; padding: 12px; transition: all 0.3s;" type="submit" onmouseenter="this.style.opacity=0.8"
+        onmouseleave="this.style.opacity=1" type="submit">Create</button>
+</div>
 }
-
+<div style="height: 15vh;"></div>

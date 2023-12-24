@@ -1,12 +1,36 @@
 @model CafeApp.Models.Product
 
+@{
+    ViewData["Header"] = "Delete";
+}
 
-<p>
-   Do you want to delete the product named @Model.Name ?
-</p>
+<div
+    style="display: flex; flex-direction: column; font-size: 24px; width: 100%; align-items: center; justify-content: center;">
+    <h1 style="margin-bottom: 45px;">
+        Do you want to delete the product named @Model.Name ?
+    </h1>
 
-<form asp-action="Delete" method="post">
-    <input type="hidden" name="id" asp-for="@Model.ProductId">
-    <button type="submit" class="btn btn-danger">Yes</button>
-    <a href="/Barista/ProductList"><button type="button" class="btn btn-primary">No</button></a>
-</form>
+    <form asp-action="Delete" method="post">
+        <input type="hidden" name="id" asp-for="@Model.ProductId">
+        <button type="submit" style="text-decoration: none;
+                        color: #F8F8F8;
+                        background-color: #b80f2b;
+                        font-family: 'Raleway', sans-serif;
+                        padding: 10px 30px;
+                        border-radius: 14px;
+                        border: none;
+                        font-size: 24px;
+                        transition: all 0.3s;" onmouseover="this.style.opacity=0.8"
+            onmouseout="this.style.opacity=1">Yes</button>
+        <a href="/Barista/ProductList"><button class="btn btn-primary" style="text-decoration: none;
+                        color: #F8F8F8;
+                        background-color: #2E2928;
+                        font-family: 'Raleway', sans-serif;
+                        padding: 10px 33px;
+                        font-size: 24px;
+                        border-radius: 14px; margin-left: 15px;
+                        transition: all 0.3s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1"
+                type="button">No</button></a>
+    </form>
+</div>
+<div style="height: 15vh;"></div>
