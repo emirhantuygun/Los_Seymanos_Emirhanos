@@ -6,19 +6,9 @@
 }
 
 <div style="display: flex; width: 55%; justify-content: space-between; margin: 0 auto; font-size: 24px;">
-    <div style="text-align: center;">
-        <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Table No</div>
-
-        @foreach (var order in Model)
-        {
-            <div style="margin-bottom: 30px;">
-                @order.TableNo
-            </div>
-        }
-    </div>
 
     <div style="text-align: center;">
-        <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Table No</div>
+        <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Order Time</div>
 
         @foreach (var order in Model)
         {
@@ -37,6 +27,17 @@
         }
     </div>
 
+    <div style="text-align: center;">
+        <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Table No</div>
+
+        @foreach (var order in Model)
+        {
+            <div style="margin-bottom: 30px;">
+                @order.TableNo
+            </div>
+        }
+    </div>
+    
     <div style="text-align: center;">
         <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Customer Name</div>
         @foreach (var order in Model)
