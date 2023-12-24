@@ -138,6 +138,19 @@
     justify-content: center;
 }
 
+.form-group {
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 12px;
+}
+
 .loginInput {
     background-color: #2e292827;
     width: 15vw;
