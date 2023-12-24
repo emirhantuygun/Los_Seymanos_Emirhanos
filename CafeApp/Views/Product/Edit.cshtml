@@ -3,8 +3,10 @@
 @{
     ViewData["Title"] = "Edit Product";
 }
-
+<link rel="stylesheet" href="~/css/createProduct.css">
 <h2>Edit Product</h2>
+
+<div class="form-control">
 
 @using (Html.BeginForm()) 
 {
@@ -36,3 +38,4 @@
     <input type="submit" value="Save" class="btn btn-primary" />
 }
 
+</div>

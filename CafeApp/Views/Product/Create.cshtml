@@ -3,8 +3,11 @@
 @{
     ViewBag.Title = "Create Product";
 }
+<link rel="stylesheet" href="~/css/createProduct.css">
 
 <h2>Create New Product</h2>
+
+<div class="form-control">
 
 @using (Html.BeginForm()) 
 {
@@ -33,3 +36,4 @@
     <input type="submit" value="Create" class="btn btn-danger" />
 }
 
+</div>
