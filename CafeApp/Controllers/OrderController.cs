@@ -132,22 +132,8 @@ namespace CafeApp.Controllers
 
                 await _context.SaveChangesAsync();
 
-                var existingOrderList = await _context.Orders.Where(o => o.TableNo == null).ToListAsync();
+                _context.ClearNullOrders();
 
-                if (existingOrderList != null)
-                {
-
-                    var orderIds = existingOrderList.Select(op => op.OrderId).ToList();
-
-                    var orderProductWiththeOrderIdList = await _context.OrderProducts
-                    .Where(op => orderIds.Contains(op.OrderId))
-                    .ToListAsync();
-
-                    _context.OrderProducts.RemoveRange(orderProductWiththeOrderIdList);
-                    _context.Orders.RemoveRange(existingOrderList);
-                }
-
-                await _context.SaveChangesAsync();
                 return RedirectToAction("MyOrder", new { id = orderId });
             }
             else

@@ -20,6 +20,26 @@ namespace CafeApp.Data
             return Baristas.SingleOrDefault(b => b.Email == email);
         }
 
+        public async void ClearNullOrders()
+        {
+            var existingOrderList = await Orders.Where(o => o.TableNo == null).ToListAsync();
+
+            if (existingOrderList != null)
+            {
+
+                var orderIds = existingOrderList.Select(op => op.OrderId).ToList();
+
+                var orderProductWiththeOrderIdList = await OrderProducts
+                .Where(op => orderIds.Contains(op.OrderId))
+                .ToListAsync();
+
+                OrderProducts.RemoveRange(orderProductWiththeOrderIdList);
+                Orders.RemoveRange(existingOrderList);
+            }
+
+            await SaveChangesAsync();
+        }
+
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
     }

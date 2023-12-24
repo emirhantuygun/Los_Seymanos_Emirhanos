@@ -18,6 +18,26 @@
     </div>
 
     <div style="text-align: center;">
+        <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Table No</div>
+
+        @foreach (var order in Model)
+        {
+            <div style="margin-bottom: 30px;">
+                @{
+                    int hours = order.OrderDate.Hour;
+                    int minutes = order.OrderDate.Minute;
+
+                    string formattedHours = hours < 10 ? "0" + hours.ToString() : hours.ToString();
+                    string formattedMinutes = minutes < 10 ? "0" + minutes.ToString() : minutes.ToString();
+
+                    string currentTimeString = formattedHours + ":" + formattedMinutes;
+                }
+                @currentTimeString
+            </div>
+        }
+    </div>
+
+    <div style="text-align: center;">
         <div style="margin-bottom: 45px; font-weight: bold; border-bottom: 1px solid;">Customer Name</div>
         @foreach (var order in Model)
         {

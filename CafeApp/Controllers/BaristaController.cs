@@ -98,6 +98,8 @@ namespace CafeApp.Controllers
                 return RedirectToAction("Login");
             }
 
+            _context.ClearNullOrders();
+
             var orders = await _context.Orders.ToListAsync();
             return View(orders);
         }
