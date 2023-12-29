@@ -1,7 +1,7 @@
 # Los Seymanos Emirhanos
 
 
-In this project, we have developed a dual-sided web application using .Net Core MVC designed for both baristas and customers of a coffee shop.
+In this project, we have developed a dual-sided web application using ASP.NET Core MVC designed for both baristas and customers of a coffee shop.
 
 We took inspiration from Breaking Bad and given the collaboration of two Emirhans and one Şeyma on this project, we collectively came up with the idea to name it 'Los Seymanos Emirhanos'.
 
